@@ -4,11 +4,12 @@ from __future__ import absolute_import
 
 from unittest import TestCase
 
+import json
 import six
-from mock import MagicMock, sentinel
+from mock import MagicMock, call, sentinel, patch
 from six.moves import range
 
-from eventtracking.backends.routing import RoutingBackend
+from eventtracking.backends.routing import RoutingBackend, AsyncRoutingBackend
 from eventtracking.processors.exceptions import EventEmissionExit
 
 
@@ -121,6 +122,7 @@ class TestRoutingBackend(TestCase):
     def test_callable_class_processor(self):
         class SampleProcessor:
             """An event processing class"""
+
             def __call__(self, event):
                 """Modify the event type"""
                 event['name'] = sentinel.changed_name
@@ -280,3 +282,64 @@ class TestRoutingBackend(TestCase):
 
         router.send(self.sample_event)
         self.assertEqual(call_order, ['0', '1', '2', '3', '4'])
+
+
+class TestAsyncRoutingBackend(TestCase):
+    """Test the async routing backend"""
+
+    def setUp(self):
+        super(TestAsyncRoutingBackend, self).setUp()
+        self.sample_event = {
+            'name': str(sentinel.name),
+            'event_type': 'edx.test.event',
+            'time': '2020-01-01T12:12:12.000000+00:00',
+            'event': {
+                'key': 'value'
+            },
+            'session': '0000'
+        }
+
+        self.mocked_backends = {
+            str(i): MagicMock() for i in range(3)
+        }
+
+    @patch('eventtracking.backends.routing.async_send')
+    def test_event_emission_exit(self, mocked_async_send):
+        mocked_processor = MagicMock(side_effect=EventEmissionExit)
+        backend = AsyncRoutingBackend(processors=[
+            mocked_processor
+        ])
+        backend.send(self.sample_event)
+        mocked_async_send.assert_not_called()
+
+    @patch('eventtracking.backends.routing.LOG')
+    @patch('eventtracking.backends.routing.json.dumps', side_effect=ValueError)
+    @patch('eventtracking.backends.routing.async_send')
+    def test_with_value_error_in_event_json_encoding(self, mocked_async_send, _, mocked_log):
+
+        backend = AsyncRoutingBackend()
+        backend.send(self.sample_event)
+
+        mocked_log.exception.assert_called_once_with('JSONEncodeError: Unable to encode event:%s', self.sample_event)
+        mocked_async_send.assert_not_called()
+
+    @patch('eventtracking.backends.routing.LOG')
+    @patch('eventtracking.backends.routing.async_send.delay')
+    def test_with_value_error_in_one_backend_json_encoding(self, mocked_async_send, mocked_log):
+        """Test the backend's send method when one of the three backends
+        could not be encoded into json.
+        """
+
+        json_event = json.dumps(self.sample_event)
+
+        with patch('eventtracking.backends.routing.json.dumps') as mocked_json_dumps:
+            mocked_json_dumps.side_effect = [json_event, ValueError, '{"mocked_backend":1}', '{"mocked_backend":2}']
+            backend = AsyncRoutingBackend(backends=self.mocked_backends)
+            backend.send(self.sample_event)
+
+            mocked_log.exception.assert_called_once_with('JSONEncodeError: Unable to encode backend: %s', '0')
+
+            mocked_async_send.assert_has_calls([
+                call('{"mocked_backend":1}', json_event, backend_name='1'),
+                call('{"mocked_backend":2}', json_event, backend_name='2'),
+            ])

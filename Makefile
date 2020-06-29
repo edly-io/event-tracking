@@ -1,4 +1,5 @@
 export DJANGO_SETTINGS_MODULE=eventtracking.django.tests.settings
+export PYTHONPATH=$(PWD)
 
 MAKE_DOC=make -C doc
 SETUP=python setup.py
