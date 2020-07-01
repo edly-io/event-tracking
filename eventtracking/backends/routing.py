@@ -2,14 +2,14 @@
 
 from __future__ import absolute_import
 
+import json
 import logging
-import pickle
 from collections import OrderedDict
-from pickle import PicklingError
 
 import six
 
 from eventtracking.processors.exceptions import EventEmissionExit
+from eventtracking.helpers import GenericJSONEncoder
 from eventtracking.tasks import async_send
 
 
@@ -145,23 +145,26 @@ class AsyncRoutingBackend(RoutingBackend):
     def send(self, event):
         """
         Process the event using all registered processors and send it to all registered backends.
-
-        Logs and swallows all `Exception`.
         """
         try:
             processed_event = self.process_event(event)
         except EventEmissionExit:
             return
 
+        try:
+            json_event = json.dumps(processed_event, cls=GenericJSONEncoder)
+        except ValueError:
+            LOG.exception(
+                'JSONEncodeError: Unable to encode event:%s', processed_event
+            )
+
         for name, backend in six.iteritems(self.backends):
+
             try:
-                pickled_backend = pickle.dumps(backend)
-                async_send.delay(name, pickled_backend, event)
-            except PicklingError:
+                json_backend = json.dumps(backend, cls=GenericJSONEncoder)
+            except ValueError:
                 LOG.exception(
-                    'Unable to pickle backend: %s', name
+                    'JSONEncodeError: Unable to encode backend:%s', name
                 )
-            except Exception:  # pylint: disable=broad-except
-                LOG.exception(
-                    'Unable to schedule task to send event to backend %s', name
-                )
+
+        async_send.delay(json_backend, json_event)
