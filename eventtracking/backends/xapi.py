@@ -1,12 +1,13 @@
-import logging
-from celery.utils.log import get_task_logger
+"""
+xAPI event processing backend
+"""
 
-from eventtracking.backends.routing import RoutingBackend
+from celery.utils.log import get_task_logger
 
 LOGGER = get_task_logger(__name__)
 
 
-class XApiBackend(RoutingBackend):
+class XAPIBackend:
     """
     Backend to transform events into xAPI compliant format
     and then route those events to configured endpoints.
