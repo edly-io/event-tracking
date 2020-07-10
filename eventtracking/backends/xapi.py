@@ -4,7 +4,7 @@ xAPI event processing backend
 
 from celery.utils.log import get_task_logger
 
-LOGGER = get_task_logger(__name__)
+logger = get_task_logger(__name__)
 
 
 class XAPIBackend:
@@ -14,5 +14,5 @@ class XAPIBackend:
     """
 
     def send(self, event):
-        LOGGER.info('XAPI')
-        LOGGER.info(event)
+        logger.info('XAPI')
+        logger.info(event)

@@ -3,7 +3,7 @@ Caliper event processing backend
 """
 from celery.utils.log import get_task_logger
 
-LOGGER = get_task_logger(__name__)
+logger = get_task_logger(__name__)
 
 
 class CaliperBackend:
@@ -13,5 +13,8 @@ class CaliperBackend:
     """
 
     def send(self, event):
-        LOGGER.info('CALIPER')
-        LOGGER.info(event)
+        """
+        Process the passed event.
+        """
+        logger.info('CALIPER')
+        logger.info(event)

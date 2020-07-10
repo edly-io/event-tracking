@@ -141,6 +141,9 @@ class RoutingBackend:
 
 
 class AsyncRoutingBackend(RoutingBackend):
+    """
+    Route events to configured backends asynchronously
+    """
 
     def send(self, event):
         """
@@ -157,14 +160,15 @@ class AsyncRoutingBackend(RoutingBackend):
             LOG.exception(
                 'JSONEncodeError: Unable to encode event:%s', processed_event
             )
+            return
 
         for name, backend in six.iteritems(self.backends):
-
             try:
                 json_backend = json.dumps(backend, cls=GenericJSONEncoder)
             except ValueError:
                 LOG.exception(
-                    'JSONEncodeError: Unable to encode backend:%s', name
+                    'JSONEncodeError: Unable to encode backend: %s', name
                 )
+                continue
 
-        async_send.delay(json_backend, json_event)
+            async_send.delay(json_backend, json_event, backend_name=name)
