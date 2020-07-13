@@ -7,7 +7,7 @@ from logging import getLogger
 
 from django.contrib.auth import get_user_model
 
-from student.models import anonymous_id_for_user
+from student.models import anonymous_id_for_user    # pylint: disable=import-error
 
 from eventtracking.processors.caliper.utils.helpers import convert_datetime
 
@@ -99,7 +99,8 @@ def _add_extensions(event, caliper_event):
         }
     }
 
-    event['context'].pop('user_id') if 'user_id' in event['context'] else None
+    if 'user_id' in event['context']:
+        del event['context']['user_id']
 
     caliper_event['extensions']['extra_fields'].update(event['context'])
 

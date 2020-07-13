@@ -24,8 +24,8 @@ EVENT_MAPPING = {
 
     # Course navigation events
     'edx.ui.lms.sequence.outline.selected': '',
-    'edx.ui.lms.sequence.next_selected': '',
-    'edx.ui.lms.sequence.previous_selected.': '',
-    'edx.ui.lms.sequence.tab_selected': '',
-    'edx.ui.lms.link_clicked': '',
+    'edx.ui.lms.sequence.next_selected': transformers.edx_ui_lms_sequence_selection,
+    'edx.ui.lms.sequence.previous_selected': transformers.edx_ui_lms_sequence_selection,
+    'edx.ui.lms.sequence.tab_selected': transformers.edx_ui_lms_sequence_selection,
+    'edx.ui.lms.link_clicked': transformers.edx_ui_lms_sequence_selection,
 }

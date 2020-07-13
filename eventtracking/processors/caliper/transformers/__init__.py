@@ -11,3 +11,7 @@ from eventtracking.processors.caliper.transformers.problem_interaction_events im
 from eventtracking.processors.caliper.transformers.enrollment_events import (
     edx_course_enrollment,
 )
+
+from eventtracking.processors.caliper.transformers.navigation_events import (
+    edx_ui_lms_sequence_selection,
+)

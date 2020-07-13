@@ -14,7 +14,8 @@ UTC_DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S.%f'
 
 def convert_datetime(current_datetime):
     """
-    Convert provided datetime into UTC format
+    Convert provided datetime into UTC format.
+
     @param datetime: datetime string.
     :return: UTC formatted datetime string.
     """

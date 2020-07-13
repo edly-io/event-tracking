@@ -5,7 +5,7 @@ import json
 import os
 
 import ddt
-from mock import MagicMock, patch
+from mock import patch
 
 from django.test import TestCase
 
