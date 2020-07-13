@@ -5,8 +5,8 @@ from eventtracking.processors.caliper import transformers
 
 EVENT_MAPPING = {
     # Enrollment Events
-    'edx.course.enrollment.activated': '',
-    'edx.course.enrollment.deactivated': '',
+    'edx.course.enrollment.activated': transformers.edx_course_enrollment,
+    'edx.course.enrollment.deactivated': transformers.edx_course_enrollment,
 
     # Problem interaction events
     'edx.grades.problem.submitted': transformers.edx_grades_problem_submitted,

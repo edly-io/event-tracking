@@ -21,6 +21,13 @@ EVENT_FIXTURE_FILENAMES = [
 ]
 
 
+def mocked_course_reverse(_, kwargs):
+    """
+    Return the reverse method to return course root URL.
+    """
+    return '/courses/{}'.format(kwargs.get('course_id'))
+
+
 @ddt.ddt
 class TestTransformers(TestCase):
     """
@@ -30,8 +37,10 @@ class TestTransformers(TestCase):
     maxDiff = None
 
     @patch('eventtracking.processors.caliper.utils.base_transformer.get_user_model')
+    @patch('eventtracking.processors.caliper.transformers.enrollment_events.reverse',
+           side_effect=mocked_course_reverse)
     @ddt.data(*EVENT_FIXTURE_FILENAMES)
-    def test_event_transformer(self, event_filename, _):
+    def test_event_transformer(self, event_filename, *_):
         input_event_file_path = '{test_dir}/fixtures/current/{event_filename}'.format(
             test_dir=TEST_DIR_PATH, event_filename=event_filename
         )

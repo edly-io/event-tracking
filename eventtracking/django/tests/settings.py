@@ -24,3 +24,5 @@ INSTALLED_APPS = [
 EVENT_TRACKING_ENABLED = True
 
 SECRET_KEY = "test_key"
+
+LMS_ROOT_URL = 'http://localhost:18000'
