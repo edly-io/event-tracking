@@ -12,7 +12,7 @@ EVENT_MAPPING = {
     'edx.grades.problem.submitted': transformers.edx_grades_problem_submitted,
     'problem_check': transformers.problem_check,
     'showanswer': transformers.show_answer,
-    'edx.problem.hint.demandhint_displayed': '',
+    'edx.problem.hint.demandhint_displayed': transformers.edx_problem_hint_demandhint_displayed,
 
 
     # Video events

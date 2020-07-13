@@ -76,3 +76,23 @@ def show_answer(current_event, caliper_event):
         'type': 'ViewEvent',
     })
     return caliper_event
+
+
+def edx_problem_hint_demandhint_displayed(current_event, caliper_event):
+    """
+    This event is generated when learner show answer button on a problem.
+    """
+    object_id = get_block_id_from_event(current_event) or current_event['referer']
+
+    caliper_event['object'].update({
+        'id': object_id,
+        'type': 'Frame',
+    })
+
+    caliper_event['object']['extensions'].update(current_event['event'])
+
+    caliper_event.update({
+        'action': 'Viewed',
+        'type': 'ViewEvent',
+    })
+    return caliper_event
