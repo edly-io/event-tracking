@@ -7,6 +7,8 @@ from logging import getLogger
 
 from django.contrib.auth import get_user_model
 
+from student.models import anonymous_id_for_user
+
 from eventtracking.processors.caliper.utils.helpers import convert_datetime
 
 
@@ -61,9 +63,6 @@ def _generate_anonymous_id(event):
     Generate anonymous user id for using the username and course_id
     in the event data. If no anonymous id is generated, return "anonymous"
     """
-    # pylint: disable=import-outside-toplevel
-    from student.models import anonymous_id_for_user
-
     User = get_user_model()
 
     # Prefer None over empty course_id

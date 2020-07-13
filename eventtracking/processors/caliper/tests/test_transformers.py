@@ -5,7 +5,7 @@ import json
 import os
 
 import ddt
-from mock import patch
+from mock import MagicMock, patch
 
 from django.test import TestCase
 
@@ -29,7 +29,7 @@ class TestTransformers(TestCase):
     # no limit to diff in the output of tests
     maxDiff = None
 
-    @patch('eventtracking.processors.caliper.utils.base_transformer._generate_anonymous_id', return_value='anonymous_id')
+    @patch('eventtracking.processors.caliper.utils.base_transformer.get_user_model')
     @ddt.data(*EVENT_FIXTURE_FILENAMES)
     def test_event_transformer(self, event_filename, _):
         input_event_file_path = '{test_dir}/fixtures/current/{event_filename}'.format(
