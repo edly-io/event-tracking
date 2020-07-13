@@ -96,3 +96,31 @@ def edx_problem_hint_demandhint_displayed(current_event, caliper_event):
         'type': 'ViewEvent',
     })
     return caliper_event
+
+
+def edx_problem_completed(current_event, caliper_event):
+    """
+    #TODO: Update the transformer and test JSON files once the event is
+    implemented in the code base.
+
+    Currently there is no such event in open edx but
+    will be added in future as per the mapping document:
+    https://docs.google.com/spreadsheets/u/1/d/1z_1IGFVDF-wZToKS2EGXFR3s0NXoh6tTKhEtDkevFEM/edit?usp=sharing.
+
+    This event is generated when learner completes a problem.
+    """
+    object_id = get_block_id_from_event(current_event) or current_event['referer']
+
+    caliper_event['object'].update({
+        'id': object_id,
+        'type': 'AssessmentItem',
+    })
+
+    current_event['event'].pop('user_id')
+    caliper_event['object']['extensions'].update(current_event['event'])
+
+    caliper_event.update({
+        'action': 'Completed',
+        'type': 'AssessmentItemEvent',
+    })
+    return caliper_event

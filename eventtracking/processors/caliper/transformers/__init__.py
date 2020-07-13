@@ -6,6 +6,7 @@ from eventtracking.processors.caliper.transformers.problem_interaction_events im
     show_answer,
     edx_grades_problem_submitted,
     edx_problem_hint_demandhint_displayed,
+    edx_problem_completed
 )
 
 from eventtracking.processors.caliper.transformers.enrollment_events import (
