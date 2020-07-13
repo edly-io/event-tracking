@@ -1,21 +1,21 @@
 {
-    "host": "localhost:18000",
-    "context": {
-        "org_id": "DMC",
-        "path": "/event",
-        "course_id": "course-v1:DMC+DMC_P_001+2020_T3",
-        "user_id": 14
-    },
-    "page": "http://localhost:18000/courses/course-v1:DMC+DMC_P_001+2020_T3/courseware/972d1f7b7b824078987293f18d4c650e/d6a3a5355c80429da76aca1c41e0445b/?activate_block_id=block-v1%3ADMC%2BDMC_P_001%2B2020_T3%2Btype%40sequential%2Bblock%40d6a3a5355c80429da76aca1c41e0445b",
-    "session": "5d598a6e736838e59d95886a13a687a6",
-    "username": "test",
-    "event_type": "problem_check",
-    "referer": "http://localhost:18000/courses/course-v1:DMC+DMC_P_001+2020_T3/courseware/972d1f7b7b824078987293f18d4c650e/d6a3a5355c80429da76aca1c41e0445b/?activate_block_id=block-v1%3ADMC%2BDMC_P_001%2B2020_T3%2Btype%40sequential%2Bblock%40d6a3a5355c80429da76aca1c41e0445b",
-    "name": "problem_check",
-    "ip": "172.18.0.1",
-    "event_source": "browser",
-    "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
     "accept_language": "en-US,en;q=0.9",
-    "time": "2020-07-09T12:23:25.839157+00:00",
-    "event": "input_536c472ba2624fe494edb64b78a39852_2_1%5B%5D=choice_0&input_536c472ba2624fe494edb64b78a39852_2_1%5B%5D=choice_1"
+    "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
+    "context": {
+        "course_id": "course-v1:edX+DemoX+Demo_Course",
+        "org_id": "edX",
+        "path": "/event",
+        "user_id": 3
+    },
+    "event": "input_3fc5461f86764ad7bdbdf6cbdde61e66_2_1%5B%5D=choice_0&input_3fc5461f86764ad7bdbdf6cbdde61e66_2_1%5B%5D=choice_3",
+    "event_source": "browser",
+    "event_type": "problem_check",
+    "host": "localhost:18000",
+    "ip": "172.18.0.1",
+    "name": "problem_check",
+    "page": "http://localhost:18000/courses/course-v1:edX+DemoX+Demo_Course/courseware/8b66dcd2d6134eda9355089ece4f39f6/ef37eb3cf1724e38b7f88a9ce85a4842/?activate_block_id=block-v1%3AedX%2BDemoX%2BDemo_Course%2Btype%40sequential%2Bblock%40ef37eb3cf1724e38b7f88a9ce85a4842",
+    "referer": "http://localhost:18000/courses/course-v1:edX+DemoX+Demo_Course/courseware/8b66dcd2d6134eda9355089ece4f39f6/ef37eb3cf1724e38b7f88a9ce85a4842/?activate_block_id=block-v1%3AedX%2BDemoX%2BDemo_Course%2Btype%40sequential%2Bblock%40ef37eb3cf1724e38b7f88a9ce85a4842",
+    "session": "481ad366d502e951135141f019c480db",
+    "time": "2020-07-10T12:52:22.852555+00:00",
+    "username": "edx"
 }

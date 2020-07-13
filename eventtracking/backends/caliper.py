@@ -1,6 +1,7 @@
 """
 Caliper event processing backend
 """
+import json
 from celery.utils.log import get_task_logger
 
 from eventtracking.processors.caliper.transformer import transform_event
@@ -29,9 +30,13 @@ class CaliperBackend:
             return
 
         except Exception as ex:
-            logger.error(
+            logger.exception(
                 'There was an error while trying to transform event "%s" into'
-                ' Caliper format. Error: %s', event_name, str(ex))
+                ' Caliper format. Error: %s', event_name, ex)
+            raise
 
-        logger.info('Successfully transformed event "%s" into Caliper format', event_name)
-        logger.info(transform_event)
+        logger.info(
+            'Successfully transformed event "%s" into Caliper format',
+            event_name
+        )
+        logger.info(json.dumps(transformed_event))

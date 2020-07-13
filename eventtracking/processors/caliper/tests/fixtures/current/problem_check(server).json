@@ -1,0 +1,74 @@
+{
+    "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
+    "accept_language": "en-US,en;q=0.9",
+    "event_type": "problem_check",
+    "event_source": "server",
+    "name": "problem_check",
+    "referer": "http://localhost:18000/courses/course-v1:edX+DemoX+Demo_Course/courseware/8b66dcd2d6134eda9355089ece4f39f6/ef37eb3cf1724e38b7f88a9ce85a4842/?activate_block_id=block-v1%3AedX%2BDemoX%2BDemo_Course%2Btype%40sequential%2Bblock%40ef37eb3cf1724e38b7f88a9ce85a4842",
+    "page": "x_module",
+    "time": "2020-07-10T12:52:23.039489+00:00",
+    "ip": "172.18.0.1",
+    "context": {
+        "course_id": "course-v1:edX+DemoX+Demo_Course",
+        "path": "/courses/course-v1:edX+DemoX+Demo_Course/xblock/block-v1:edX+DemoX+Demo_Course+type@problem+block@3fc5461f86764ad7bdbdf6cbdde61e66/handler/xmodule_handler/problem_check",
+        "module": {
+            "display_name": "Checkboxes",
+            "usage_key": "block-v1:edX+DemoX+Demo_Course+type@problem+block@3fc5461f86764ad7bdbdf6cbdde61e66"
+        },
+        "user_id": 3,
+        "org_id": "edX",
+        "course_user_tags": {},
+        "asides": {}
+    },
+    "host": "localhost:18000",
+    "event": {
+        "answers": {
+            "3fc5461f86764ad7bdbdf6cbdde61e66_2_1": [
+                "choice_0",
+                "choice_3"
+            ]
+        },
+        "success": "correct",
+        "state": {
+            "seed": 1,
+            "correct_map": {},
+            "student_answers": {},
+            "input_state": {
+                "3fc5461f86764ad7bdbdf6cbdde61e66_2_1": {}
+            },
+            "has_saved_answers": false,
+            "done": false
+        },
+        "attempts": 1,
+        "submission": {
+            "3fc5461f86764ad7bdbdf6cbdde61e66_2_1": {
+                "variant": "",
+                "response_type": "choiceresponse",
+                "correct": true,
+                "question": "Add the question text, or prompt, here. This text is required.",
+                "input_type": "checkboxgroup",
+                "group_label": "",
+                "answer": [
+                    "a correct answer",
+                    "a correct answer"
+                ]
+            }
+        },
+        "grade": 1,
+        "problem_id": "block-v1:edX+DemoX+Demo_Course+type@problem+block@3fc5461f86764ad7bdbdf6cbdde61e66",
+        "correct_map": {
+            "3fc5461f86764ad7bdbdf6cbdde61e66_2_1": {
+                "queuestate": null,
+                "correctness": "correct",
+                "answervariable": null,
+                "msg": "",
+                "npoints": null,
+                "hintmode": null,
+                "hint": ""
+            }
+        },
+        "max_grade": 1
+    },
+    "session": "481ad366d502e951135141f019c480db",
+    "username": "edx"
+}

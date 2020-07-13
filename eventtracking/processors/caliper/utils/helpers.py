@@ -1,7 +1,13 @@
 """
 Helper methods to be used by caliper utilities.
 """
+import logging
+from urllib.parse import parse_qs, urlparse
+
 from dateutil.parser import parse
+
+
+logger = logging.getLogger(__name__)
 
 UTC_DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S.%f'
 
@@ -20,7 +26,22 @@ def convert_datetime(current_datetime):
     utc_offset = current_datetime.utcoffset()
     utc_datetime = current_datetime - utc_offset
 
-    formatted_datetime = '{}{}'.format(
-        utc_datetime.strftime(UTC_DATETIME_FORMAT)[:-3], 'Z'
-    )
+    formatted_datetime = utc_datetime.strftime(UTC_DATETIME_FORMAT)[:-3] + 'Z'
+
     return formatted_datetime
+
+
+def get_block_id_from_event(event):
+    """
+    Derive and return block id from event
+    """
+    try:
+        return event['context']['module']['usage_key']
+    except KeyError:
+        try:
+            parsed = urlparse(event['referer'])
+            block_id = parse_qs(parsed.query)['activate_block_id'][0]
+            return block_id
+        except (KeyError, IndexError):
+            logger.error('Could not get block id for event "%s"', event.get('name'))
+            return None

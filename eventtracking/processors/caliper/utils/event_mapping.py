@@ -9,9 +9,9 @@ EVENT_MAPPING = {
     'edx.course.enrollment.deactivated': '',
 
     # Problem interaction events
-    'edx.grades.problem.submitted': '',
+    'edx.grades.problem.submitted': transformers.edx_grades_problem_submitted,
     'problem_check': transformers.problem_check,
-    'showanswer': '',
+    'showanswer': transformers.show_answer,
     'edx.problem.hint.demandhint_displayed': '',
 
 

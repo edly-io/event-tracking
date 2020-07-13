@@ -1,0 +1,29 @@
+{
+    "accept_language": "en-US,en;q=0.9",
+    "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
+    "context": {
+        "asides": {},
+        "course_id": "course-v1:edX+DemoX+Demo_Course",
+        "course_user_tags": {},
+        "module": {
+            "display_name": "Checkboxes",
+            "usage_key": "block-v1:edX+DemoX+Demo_Course+type@problem+block@3fc5461f86764ad7bdbdf6cbdde61e66"
+        },
+        "org_id": "edX",
+        "path": "/courses/course-v1:edX+DemoX+Demo_Course/xblock/block-v1:edX+DemoX+Demo_Course+type@problem+block@3fc5461f86764ad7bdbdf6cbdde61e66/handler/xmodule_handler/problem_show",
+        "user_id": 3
+    },
+    "event": {
+        "problem_id": "block-v1:edX+DemoX+Demo_Course+type@problem+block@3fc5461f86764ad7bdbdf6cbdde61e66"
+    },
+    "event_source": "server",
+    "event_type": "showanswer",
+    "host": "localhost:18000",
+    "ip": "172.18.0.1",
+    "name": "showanswer",
+    "page": "x_module",
+    "referer": "http://localhost:18000/courses/course-v1:edX+DemoX+Demo_Course/courseware/8b66dcd2d6134eda9355089ece4f39f6/ef37eb3cf1724e38b7f88a9ce85a4842/?activate_block_id=block-v1%3AedX%2BDemoX%2BDemo_Course%2Btype%40sequential%2Bblock%40ef37eb3cf1724e38b7f88a9ce85a4842",
+    "session": "a77a5baf55c9d212e8643bf5c51149fe",
+    "time": "2020-07-12T09:34:26.168169+00:00",
+    "username": "edx"
+}
