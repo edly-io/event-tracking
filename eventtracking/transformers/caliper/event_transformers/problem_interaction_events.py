@@ -1,9 +1,10 @@
 """
 Transformers for problem interaction events.
 """
-from eventtracking.processors.caliper.utils.helpers import get_block_id_from_event
+from eventtracking.transformers.caliper.helpers import get_block_id_from_event
 
-from eventtracking.processors.caliper.transformers.registry import CaliperTransformer, TransformerRegistry
+from eventtracking.transformers.caliper.base_transformer import CaliperTransformer
+from eventtracking.transformers.caliper.registry import TransformerRegistry
 
 
 EVENT_ACTION_MAP = {

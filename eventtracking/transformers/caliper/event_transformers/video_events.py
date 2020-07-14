@@ -1,12 +1,12 @@
 """
 Transformers for video interaction events.
 """
-import json
 from datetime import timedelta
 
 from isodate import duration_isoformat
 
-from eventtracking.processors.caliper.transformers.registry import CaliperTransformer, TransformerRegistry
+from eventtracking.transformers.caliper.base_transformer import CaliperTransformer
+from eventtracking.transformers.caliper.registry import TransformerRegistry
 
 
 EVENTS_ACTION_MAP = {

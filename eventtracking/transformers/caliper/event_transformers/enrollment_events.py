@@ -4,7 +4,8 @@ Transformers for enrollment related events.
 from django.conf import settings
 from django.urls import reverse
 
-from eventtracking.processors.caliper.transformers.registry import CaliperTransformer, TransformerRegistry
+from eventtracking.transformers.caliper.base_transformer import CaliperTransformer
+from eventtracking.transformers.caliper.registry import TransformerRegistry
 
 
 @TransformerRegistry.register('edx.course.enrollment.activated')

@@ -5,7 +5,8 @@ import json
 
 import six
 
-from eventtracking.processors.caliper.transformers.registry import CaliperTransformer, TransformerRegistry
+from eventtracking.transformers.caliper.base_transformer import CaliperTransformer
+from eventtracking.transformers.caliper.registry import TransformerRegistry
 
 
 @TransformerRegistry.register('edx.ui.lms.sequence.next_selected')

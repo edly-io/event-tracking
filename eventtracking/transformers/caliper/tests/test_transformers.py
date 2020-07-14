@@ -9,8 +9,7 @@ from mock import patch
 
 from django.test import TestCase
 
-from eventtracking.processors.caliper.transformer import transform_event
-from eventtracking.processors.caliper.transformers.registry import TransformerRegistry
+from eventtracking.transformers.caliper.registry import TransformerRegistry
 
 
 TEST_DIR_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -37,9 +36,8 @@ class TestTransformers(TestCase):
     # no limit to diff in the output of tests
     maxDiff = None
 
-    @patch('eventtracking.processors.caliper.utils.base_transformer.get_user_model')
-    @patch('eventtracking.processors.caliper.transformers.registry.get_user_model')
-    @patch('eventtracking.processors.caliper.transformers.enrollment_events.reverse',
+    @patch('eventtracking.transformers.caliper.base_transformer.get_user_model')
+    @patch('eventtracking.transformers.caliper.event_transformers.enrollment_events.reverse',
            side_effect=mocked_course_reverse)
     @ddt.data(*EVENT_FIXTURE_FILENAMES)
     def test_event_transformer(self, event_filename, *_):

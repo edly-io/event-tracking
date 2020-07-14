@@ -4,8 +4,8 @@ Caliper event processing backend
 import json
 from celery.utils.log import get_task_logger
 
-from eventtracking.processors.caliper.transformer import transform_event
-from eventtracking.processors.caliper.exceptions import NoTransformerImplemented
+from eventtracking.transformers.caliper.registry import TransformerRegistry
+from eventtracking.transformers.caliper.exceptions import NoTransformerImplemented
 
 logger = get_task_logger(__name__)
 
@@ -24,7 +24,7 @@ class CaliperBackend:
         logger.info('Going to transform event "%s" into Caliper format', event_name)
 
         try:
-            transformed_event = transform_event(event)
+            transformed_event = TransformerRegistry.get_transformer(event).transform()
         except NoTransformerImplemented:
             logger.error('Could not transform %s event to Caliper', event.get('name'))
             return

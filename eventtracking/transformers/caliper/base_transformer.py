@@ -1,5 +1,5 @@
 """
-Registry to keep track of event transforems
+Base transformer to add or transform common data values.
 """
 import json
 import uuid
@@ -10,36 +10,12 @@ from django.contrib.auth import get_user_model
 
 from student.models import anonymous_id_for_user    # pylint: disable=import-error
 
-from eventtracking.processors.caliper.utils.helpers import convert_datetime
+from eventtracking.transformers.caliper.helpers import convert_datetime
 
 
-CALIPER_CONTEXT = 'http://purl.imsglobal.org/ctx/caliper/v1p1'
+CALIPER_EVENT_CONTEXT = 'http://purl.imsglobal.org/ctx/caliper/v1p1'
 
 logger = getLogger()
-
-
-class TransformerRegistry:
-    """
-    This class keeps tracks of event to transformer mapping.
-    """
-
-    mapping = {}
-
-    @classmethod
-    def register(cls, event_key):
-        """
-        Decorator to register a transformer for an event
-        """
-        def __inner__(transformer):
-            cls.mapping[event_key] = transformer
-            return transformer
-
-        return __inner__
-
-    @classmethod
-    def get_transformer(cls, event):
-        event_name = event.get('name')
-        return cls.mapping[event_name](event)
 
 
 class CaliperTransformer:
@@ -91,7 +67,7 @@ class CaliperTransformer:
         Add all of the generic fields to the transformed_event object.
         """
         transformed_event.update({
-            '@context': CALIPER_CONTEXT,
+            '@context': CALIPER_EVENT_CONTEXT,
             'id': uuid.uuid4().urn,
             'eventTime': convert_datetime(self.event.get('time'))
         })
@@ -133,29 +109,6 @@ class CaliperTransformer:
             anonymous_id = anonymous_id_for_user(user, course_id)
 
         return anonymous_id
-
-    def _add_extensions(self, transformed_event):
-        """
-        A map of additional attributes not defined by the model MAY be
-        specified for a more concise representation of the Event.
-        """
-        transformed_event['extensions'] = {
-            'extra_fields': {
-                'agent': self.event.get('agent'),
-                'event_type': self.event.get('event_type'),
-                'event_source': self.event.get('event_source'),
-                'host': self.event.get('host'),
-                'session': self.event.get('session'),
-                # 'user_id': event['context'].get('user_id'),
-                'accept_language': self.event.get('accept_language'),
-                'page': self.event.get('page'),
-            }
-        }
-
-        if 'user_id' in self.event['context']:
-            del self.event['context']['user_id']
-
-        transformed_event['extensions']['extra_fields'].update(self.event['context'])
 
     def _add_referrer(self, transformed_event):
         """
