@@ -5,8 +5,14 @@ import json
 
 import six
 
+from eventtracking.processors.caliper.transformers.registry import CaliperTransformer, TransformerRegistry
 
-def edx_ui_lms_sequence_selection(current_event, caliper_event):
+
+@TransformerRegistry.register('edx.ui.lms.sequence.next_selected')
+@TransformerRegistry.register('edx.ui.lms.sequence.previous_selected')
+@TransformerRegistry.register('edx.ui.lms.sequence.tab_selected')
+@TransformerRegistry.register('edx.ui.lms.link_clicked')
+class NavigationEventsTransformers(CaliperTransformer):
     """
     These events are generated when the user navigates through
     the units in a course.
@@ -16,22 +22,22 @@ def edx_ui_lms_sequence_selection(current_event, caliper_event):
         - edx.ui.lms.sequence.previous_selected
         - edx.ui.lms.sequence.tab_selected
     """
-    if isinstance(current_event['event'], six.string_types):
-        event = json.loads(current_event['event'])
-    else:
-        event = current_event['event']
+    action = 'NavigatedTo'
+    type = 'NavigationEvent'
 
-    object_id = event.pop('target_url') if current_event['name'] == 'edx.ui.lms.link_clicked' else event.pop('id')
+    def get_object(self, current_event, caliper_event):
+        if isinstance(current_event['event'], six.string_types):
+            event = json.loads(current_event['event'])
+        else:
+            event = current_event['event']
 
-    caliper_event['object'].update({
-        'id': object_id,  # TODO: should simply use this value or make a URL?
-        'type': 'WebPage',
-        'extensions': event
-    })
+        object_id = event.pop('target_url') if current_event['name'] == 'edx.ui.lms.link_clicked' else event.pop('id')
 
-    caliper_event.update({
-        'action': 'NavigatedTo',
-        'type': 'NavigationEvent',
-    })
+        caliper_object = caliper_event['object']
+        caliper_object.update({
+            'id': object_id,
+            'type': 'WebPage',
+            'extensions': event
+        })
 
-    return caliper_event
+        return caliper_object

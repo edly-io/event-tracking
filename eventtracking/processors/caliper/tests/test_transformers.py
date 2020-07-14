@@ -10,6 +10,7 @@ from mock import patch
 from django.test import TestCase
 
 from eventtracking.processors.caliper.transformer import transform_event
+from eventtracking.processors.caliper.transformers.registry import TransformerRegistry
 
 
 TEST_DIR_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -37,10 +38,12 @@ class TestTransformers(TestCase):
     maxDiff = None
 
     @patch('eventtracking.processors.caliper.utils.base_transformer.get_user_model')
+    @patch('eventtracking.processors.caliper.transformers.registry.get_user_model')
     @patch('eventtracking.processors.caliper.transformers.enrollment_events.reverse',
            side_effect=mocked_course_reverse)
     @ddt.data(*EVENT_FIXTURE_FILENAMES)
     def test_event_transformer(self, event_filename, *_):
+
         input_event_file_path = '{test_dir}/fixtures/current/{event_filename}'.format(
             test_dir=TEST_DIR_PATH, event_filename=event_filename
         )
@@ -53,7 +56,8 @@ class TestTransformers(TestCase):
             original_event = json.loads(current.read())
             expected_event = json.loads(expected.read())
 
-            actual_transformed_event = transform_event(original_event)
+            # actual_transformed_event = transform_event(original_event)
+            actual_transformed_event = TransformerRegistry.get_transformer(original_event).transform()
 
             # id is a randomly generated UUID therefore not comparing that
             self.assertIn('id', actual_transformed_event)
