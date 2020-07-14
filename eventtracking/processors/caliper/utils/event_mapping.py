@@ -25,6 +25,7 @@ EVENT_MAPPING = {
 
     # Course navigation events
     'edx.ui.lms.sequence.outline.selected': '', # TODO: cannot find/generate this event
+                                                #  can be found in code using edx.ui.lms.outline.selected
     'edx.ui.lms.sequence.next_selected': transformers.edx_ui_lms_sequence_selection,
     'edx.ui.lms.sequence.previous_selected': transformers.edx_ui_lms_sequence_selection,
     'edx.ui.lms.sequence.tab_selected': transformers.edx_ui_lms_sequence_selection,
