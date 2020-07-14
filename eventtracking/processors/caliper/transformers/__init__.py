@@ -16,3 +16,8 @@ from eventtracking.processors.caliper.transformers.enrollment_events import (
 from eventtracking.processors.caliper.transformers.navigation_events import (
     edx_ui_lms_sequence_selection,
 )
+
+
+from eventtracking.processors.caliper.transformers.video_events import (
+    video_transformer,
+)

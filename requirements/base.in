@@ -9,3 +9,4 @@ six
 celery
 django-model-utils
 python-dateutil
+isodate
