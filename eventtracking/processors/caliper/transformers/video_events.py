@@ -6,6 +6,7 @@ from datetime import timedelta
 
 from isodate import duration_isoformat
 
+
 EVENTS_ACTION_MAP = {
     'load_video': 'Retrieved',
     'play_video': 'Started',
@@ -27,16 +28,7 @@ def make_video_block_id(video_id, course_id, video_block_name='video+block', blo
 
 def _base_video_transformer(current_event, caliper_event):
     """
-    This transformer supports transformation of these events:
-
-        - load_video
-        - play_video
-        - pause_video
-        - stop_video
-        - complete_video (proposed)
-            This event does not exist currently but is expected to be added in the future.
-            # FIXME: Do we need this? stop_video serves the same purpose
-
+    Base tranformer for video related events.
     """
     event_name = current_event['name']
     event = json.loads(current_event['event'])
@@ -58,20 +50,6 @@ def _base_video_transformer(current_event, caliper_event):
 
     object_id = make_video_block_id(course_id=course_id, video_id=video_id)
 
-    # current_time = duration_isoformat(timedelta(
-    #     seconds=event.pop('currentTime')
-    # )) if 'currentTime' in event else None
-
-    # if event_name in (
-    #     'play_video',
-    #     'pause_video'
-    # ):
-    #     caliper_event['target'] = {
-    #         'id': object_id,
-    #         'type': 'MediaLocation',
-    #         'currentTime': current_time
-    #     }
-
     caliper_event['object'].update({
         'id': object_id,
         'type': 'VideoObject',
@@ -79,20 +57,6 @@ def _base_video_transformer(current_event, caliper_event):
                 seconds=event.pop('duration')
         ))
     })
-
-    # if event_name == 'seek_video':
-    #     new_time = duration_isoformat(timedelta(
-    #         seconds=event.pop('new_time')
-    #     ))
-    #     old_time = duration_isoformat(timedelta(
-    #         seconds=event.pop('old_time')
-    #     ))
-    #     caliper_event['object']['extensions'].update({
-    #         'new_time': new_time,
-    #         'old_time': old_time
-    #     })
-
-    # caliper_event['object']['extensions'].update(event)
 
     caliper_event.update({
         'action': EVENTS_ACTION_MAP[event_name],
@@ -103,6 +67,11 @@ def _base_video_transformer(current_event, caliper_event):
 
 
 def load_stop_video(current_event, caliper_event):
+    """
+    This transformer is responsible for transformation of these two events:
+        - load_video
+        - stop_video
+    """
     caliper_event = _base_video_transformer(current_event, caliper_event)
 
     if 'currentTime' in current_event['event']:
@@ -113,6 +82,11 @@ def load_stop_video(current_event, caliper_event):
 
 
 def play_pause_video(current_event, caliper_event):
+    """
+    This transformer is responsible for transformation of these two events:
+        - play_video
+        - pause_video
+    """
     caliper_event = _base_video_transformer(current_event, caliper_event)
 
     current_time = duration_isoformat(timedelta(
@@ -129,6 +103,9 @@ def play_pause_video(current_event, caliper_event):
 
 
 def seek_video(current_event, caliper_event):
+    """
+    Transform "seek_video" event.
+    """
     caliper_event = _base_video_transformer(current_event, caliper_event)
 
     new_time = duration_isoformat(timedelta(

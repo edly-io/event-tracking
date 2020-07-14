@@ -17,7 +17,6 @@ from eventtracking.processors.caliper.transformers.navigation_events import (
     edx_ui_lms_sequence_selection,
 )
 
-
 from eventtracking.processors.caliper.transformers.video_events import (
     play_pause_video,
     seek_video,
