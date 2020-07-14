@@ -24,7 +24,7 @@ class TestCaliperBackend(TestCase):
     def test_send_method_with_no_transformer_implemented(self, mocked_logger):
         self.backend.send(self.sample_event)
         mocked_logger.error.assert_called_once_with(
-            'Could not transform %s event to Caliper',
+            'Could not get transformer for %s event.',
             self.sample_event.get('name')
         )
 

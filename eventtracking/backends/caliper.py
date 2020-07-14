@@ -26,7 +26,7 @@ class CaliperBackend:
         try:
             transformed_event = TransformerRegistry.get_transformer(event).transform()
         except NoTransformerImplemented:
-            logger.error('Could not transform %s event to Caliper', event.get('name'))
+            logger.error('Could not get transformer for %s event.', event.get('name'))
             return
 
         except Exception as ex:
