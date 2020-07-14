@@ -19,6 +19,9 @@ EVENTS_ACTION_MAP = {
 
 
 def make_video_block_id(video_id, course_id, video_block_name='video+block', block_version='block-v1'):
+    """
+    Return formatted video block id for provided video and course.
+    """
     return '{block_version}:{course_id}+type@{video_block_name}@{video_id}'.format(
         block_version=block_version,
         course_id=course_id,
@@ -28,6 +31,9 @@ def make_video_block_id(video_id, course_id, video_block_name='video+block', blo
 
 
 def convert_seconds_to_iso(seconds):
+    """
+    Convert seconds from integer to ISO format.
+    """
     return duration_isoformat(timedelta(
         seconds=seconds
     ))
@@ -40,9 +46,15 @@ class BaseVideoTransformer(CaliperTransformer):
     type = 'MediaEvent'
 
     def get_action(self, current_event, _):
+        """
+        Return action for the caliper event.
+        """
         return EVENTS_ACTION_MAP[current_event['name']]
 
     def get_object(self, current_event, caliper_event):
+        """
+        Return object for the caliper event.
+        """
         self.json_load_event()
         caliper_object = caliper_event['object']
         event = current_event['event'].copy()
@@ -63,7 +75,10 @@ class BaseVideoTransformer(CaliperTransformer):
         return caliper_object
 
     def transform(self):
-        # import pdb; pdb.set_trace()
+        """
+        Override the base class transform method to clean unwanted
+        fields from the transformed event.
+        """
         transformed_event = super().transform()
         if 'duration' in transformed_event['object']['extensions']:
             del transformed_event['object']['extensions']['duration']
@@ -78,6 +93,9 @@ class LoadVideoTransformer(BaseVideoTransformer):
     type = 'Event'
 
     def get_object(self, current_event, caliper_event):
+        """
+        Return transformed object for the caliper event.
+        """
         caliper_object = super(LoadVideoTransformer, self).get_object(current_event, caliper_event)
 
         caliper_event['object']['extensions'].update(current_event['event'])
@@ -91,6 +109,9 @@ class StopVideoTransformer(BaseVideoTransformer):
     """
 
     def get_object(self, current_event, caliper_event):
+        """
+        Return transformed object for the caliper event.
+        """
         caliper_object = super(StopVideoTransformer, self).get_object(current_event, caliper_event)
         event = current_event['event'].copy()
 
@@ -110,6 +131,9 @@ class PlayPauseVideoTransformer(BaseVideoTransformer):
     transforming_fields = BaseVideoTransformer.transforming_fields + ('target', )
 
     def get_object(self, current_event, caliper_event):
+        """
+        Return transformed object for the caliper event.
+        """
         caliper_object = super(PlayPauseVideoTransformer, self).get_object(current_event, caliper_event)
 
         event = current_event['event'].copy()
@@ -121,6 +145,9 @@ class PlayPauseVideoTransformer(BaseVideoTransformer):
         return caliper_object
 
     def get_target(self, current_event, caliper_event):
+        """
+        Return target for the caliper event.
+        """
         current_time = convert_seconds_to_iso(
             seconds=current_event['event']['currentTime']
         )
@@ -139,6 +166,9 @@ class SeekVideoTransformer(BaseVideoTransformer):
     """
 
     def get_object(self, current_event, caliper_event):
+        """
+        Return tranformed object for the caliper event.
+        """
         caliper_object = super().get_object(current_event, caliper_event)
         event = current_event['event'].copy()
 

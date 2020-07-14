@@ -53,12 +53,21 @@ class ProblemEventsTransformers(CaliperTransformer):
     """
 
     def get_type(self, current_event, _):
+        """
+        Return type for caliper event.
+        """
         return EVENT_TYPE_MAP[current_event['name']]
 
     def get_action(self, current_event, _):
+        """
+        Return action for caliper event.
+        """
         return EVENT_ACTION_MAP[current_event['name']]
 
     def get_object(self, current_event, transformed_event):
+        """
+        Return transformed object for caliper event.
+        """
         object_id = get_block_id_from_event(current_event) or current_event['referer']
 
         caliper_object = transformed_event['object']

@@ -27,6 +27,9 @@ class NavigationEventsTransformers(CaliperTransformer):
     type = 'NavigationEvent'
 
     def get_object(self, current_event, caliper_event):
+        """
+        Return transformed object for caliper event.
+        """
         if isinstance(current_event['event'], six.string_types):
             event = json.loads(current_event['event'])
         else:

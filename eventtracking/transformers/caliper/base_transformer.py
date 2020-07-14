@@ -34,10 +34,16 @@ class CaliperTransformer:
         self.event = event.copy()
 
     def json_load_event(self):
+        """
+        Save the JSON decoded event into current event's "event".
+        """
         if isinstance(self.event['event'], six.string_types):
             self.event['event'] = json.loads(self.event['event'])
 
     def transform(self):
+        """
+        Transform the edX event into Caliper event.
+        """
         transformed_event = {}
         self._base_transform(transformed_event)
 
@@ -58,6 +64,9 @@ class CaliperTransformer:
         return transformed_event
 
     def _base_transform(self, transformed_event):
+        """
+        Transform common Caliper fields.
+        """
         self._add_generic_fields(transformed_event)
         self._add_actor_info(transformed_event)
         self._add_referrer(transformed_event)
@@ -113,9 +122,6 @@ class CaliperTransformer:
     def _add_referrer(self, transformed_event):
         """
         Adds information of an Entity that represents the referring context.
-
-        @param event: unprocessed event dict
-        @param transformed_event: caliper event dict
         """
         transformed_event['referrer'] = {
             'id': self.event.get('referer'),
