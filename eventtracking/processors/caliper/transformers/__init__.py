@@ -19,5 +19,7 @@ from eventtracking.processors.caliper.transformers.navigation_events import (
 
 
 from eventtracking.processors.caliper.transformers.video_events import (
-    video_transformer,
+    play_pause_video,
+    seek_video,
+    load_stop_video
 )

@@ -20,19 +20,19 @@ EVENT_MAPPING = {
     # These events are mapped to different names.
 
     # edx.video.loaded
-    'load_video': transformers.video_transformer,
+    'load_video': transformers.load_stop_video,
     # 'edx.video.played'
-    'play_video': transformers.video_transformer,
+    'play_video': transformers.play_pause_video,
     # 'edx.video.stopped'
-    'stop_video': transformers.video_transformer,
+    'stop_video': transformers.load_stop_video,
     # 'edx.video.paused'
-    'pause_video': transformers.video_transformer,
+    'pause_video': transformers.play_pause_video,
     # 'edx.video.position.changed'
-    'seek_video': transformers.video_transformer,
+    'seek_video': transformers.seek_video,
 
     # Course navigation events
-    'edx.ui.lms.sequence.outline.selected': '', # TODO: cannot find/generate this event
-                                                #  can be found in code using edx.ui.lms.outline.selected
+    'edx.ui.lms.sequence.outline.selected': '',  # TODO: cannot find/generate this event
+                                                 #  can be found in code using edx.ui.lms.outline.selected
     'edx.ui.lms.sequence.next_selected': transformers.edx_ui_lms_sequence_selection,
     'edx.ui.lms.sequence.previous_selected': transformers.edx_ui_lms_sequence_selection,
     'edx.ui.lms.sequence.tab_selected': transformers.edx_ui_lms_sequence_selection,
