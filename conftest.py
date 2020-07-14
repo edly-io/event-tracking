@@ -1,3 +1,6 @@
+"""
+Configure pytest before running any test.
+"""
 import sys
 
 import mock
