@@ -1,5 +1,26 @@
 """
 Transformers for video interaction events.
+
+NOTE: Currently Open edX only emits legacy events for video interaction i.e.
+- load_video
+- play_video
+- stop_video
+- complete_video (proposed)
+- pause_video
+- seek_video
+
+These event names are to be changed following the new event name format.
+Currently, mobile apps emits these events using the new names but will be
+added in edx-platform too. Therefore, we are adding support for legacy event names
+as well as new names.
+
+These events:
+- edx.video.loaded
+- edx.video.played
+- edx.video.stopped
+- edx.video.paused
+- edx.video.position.changed
+- edx.video.completed (proposed)
 """
 from datetime import timedelta
 
@@ -87,9 +108,10 @@ class BaseVideoTransformer(CaliperTransformer):
 
 
 @TransformerRegistry.register('load_video')
+@TransformerRegistry.register('edx.video.loaded')
 class LoadVideoTransformer(BaseVideoTransformer):
     """
-    Transform "load_video" event.
+    Transform the events fired when a video is loaded.
     """
     type = 'Event'
 
@@ -104,10 +126,12 @@ class LoadVideoTransformer(BaseVideoTransformer):
 
 
 @TransformerRegistry.register('stop_video')
+@TransformerRegistry.register('edx.video.stopped')
 @TransformerRegistry.register('complete_video')
+@TransformerRegistry.register('edx.video.completed')
 class StopVideoTransformer(BaseVideoTransformer):
     """
-    Transform "stop_video" and "complete_video" events.
+    Transform the events fired when a video is completed.
 
     Please note that "complete_video" doesn't exist currently but is
     expected to be added.
@@ -128,10 +152,12 @@ class StopVideoTransformer(BaseVideoTransformer):
 
 
 @TransformerRegistry.register('play_video')
+@TransformerRegistry.register('edx.video.played')
 @TransformerRegistry.register('pause_video')
+@TransformerRegistry.register('edx.video.paused')
 class PlayPauseVideoTransformer(BaseVideoTransformer):
     """
-    Transform "play_video" and "pause_video" events.
+    Transform the events fired when a video is played or paused.
     """
     transforming_fields = BaseVideoTransformer.transforming_fields + ('target', )
 
@@ -165,9 +191,10 @@ class PlayPauseVideoTransformer(BaseVideoTransformer):
 
 
 @TransformerRegistry.register('seek_video')
+@TransformerRegistry.register('edx.video.position.changed')
 class SeekVideoTransformer(BaseVideoTransformer):
     """
-    Transform "seek_video" event.
+    Transform the events fired when a video is seeked.
     """
 
     def get_object(self, current_event, caliper_event):
