@@ -5,7 +5,7 @@
         "id": "anonymous_id",
         "type": "Person"
     },
-    "eventTime": "2020-07-14T07:23:00.176Z",
+    "eventTime": "2020-07-15T06:58:28.027Z",
     "id": "urn:uuid:0c2521d1-2449-42fe-85d9-c706040b0d6d",
     "object": {
         "duration": "PT3M15S",
@@ -13,8 +13,8 @@
             "code": "b7xgknqkQk8",
             "course_id": "course-v1:edX+DemoX+Demo_Course",
             "id": "0b9e39477cf34507a7a48f74be381fdd",
-            "new_time": "PT1M20S",
-            "old_time": "PT45.500575S",
+            "new_time": "PT10S",
+            "old_time": "PT3M14.381S",
             "type": "onSlideSeek"
         },
         "id": "block-v1:course-v1:edX+DemoX+Demo_Course+type@video+block@0b9e39477cf34507a7a48f74be381fdd",

@@ -41,7 +41,6 @@ class TestTransformers(TestCase):
            side_effect=mocked_course_reverse)
     @ddt.data(*EVENT_FIXTURE_FILENAMES)
     def test_event_transformer(self, event_filename, *_):
-
         input_event_file_path = '{test_dir}/fixtures/current/{event_filename}'.format(
             test_dir=TEST_DIR_PATH, event_filename=event_filename
         )

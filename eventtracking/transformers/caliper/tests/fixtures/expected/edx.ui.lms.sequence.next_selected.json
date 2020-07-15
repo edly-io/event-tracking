@@ -5,13 +5,11 @@
         "id": "anonymous_id",
         "type": "Person"
     },
-    "eventTime": "2020-07-13T09:09:48.959Z",
+    "eventTime": "2020-07-14T14:06:42.424Z",
     "id": "urn:uuid:39e7b46a-64a4-4f86-9a40-b55b36a1f3c8",
     "object": {
         "extensions": {
-            "new": 2,
-            "old": 1,
-            "current_tab": 1,
+            "current_tab": 4,
             "tab_count": 10,
             "widget_placement": "top"
         },

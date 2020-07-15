@@ -1,10 +1,6 @@
 """
 Transformers for navigation related events.
 """
-import json
-
-import six
-
 from eventtracking.transformers.caliper.base_transformer import CaliperTransformer
 from eventtracking.transformers.caliper.registry import TransformerRegistry
 
@@ -13,15 +9,15 @@ from eventtracking.transformers.caliper.registry import TransformerRegistry
 @TransformerRegistry.register('edx.ui.lms.sequence.previous_selected')
 @TransformerRegistry.register('edx.ui.lms.sequence.tab_selected')
 @TransformerRegistry.register('edx.ui.lms.link_clicked')
+@TransformerRegistry.register('edx.ui.lms.sequence.outline.selected')
+@TransformerRegistry.register('edx.ui.lms.outline.selected')
 class NavigationEventsTransformers(CaliperTransformer):
     """
     These events are generated when the user navigates through
     the units in a course.
 
-    This transformer supports these events:
-        - edx.ui.lms.sequence.next_selected
-        - edx.ui.lms.sequence.previous_selected
-        - edx.ui.lms.sequence.tab_selected
+    "edx.ui.lms.sequence.outline.selected" and "edx.ui.lms.outline.selected" are
+    actually same events.
     """
     action = 'NavigatedTo'
     type = 'NavigationEvent'
@@ -30,18 +26,15 @@ class NavigationEventsTransformers(CaliperTransformer):
         """
         Return transformed object for caliper event.
         """
-        if isinstance(current_event['event'], six.string_types):
-            event = json.loads(current_event['event'])
-        else:
-            event = current_event['event']
-
-        object_id = event.pop('target_url') if current_event['name'] == 'edx.ui.lms.link_clicked' else event.pop('id')
-
         caliper_object = caliper_event['object']
+        data = current_event['data']
+
+        object_id = data.pop('target_url') if current_event['name'] == 'edx.ui.lms.link_clicked' else data.pop('id')
+
         caliper_object.update({
             'id': object_id,
             'type': 'WebPage',
-            'extensions': event
+            'extensions': data
         })
 
         return caliper_object

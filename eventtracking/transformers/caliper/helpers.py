@@ -32,17 +32,14 @@ def convert_datetime(current_datetime):
     return formatted_datetime
 
 
-def get_block_id_from_event(event):
+def get_block_id_from_event_referrer(event):
     """
-    Derive and return block id from event
+    Derive and return block id from event referrer
     """
     try:
-        return event['context']['module']['usage_key']
-    except KeyError:
-        try:
-            parsed = urlparse(event['referer'])
-            block_id = parse_qs(parsed.query)['activate_block_id'][0]
-            return block_id
-        except (KeyError, IndexError):
-            logger.error('Could not get block id for event "%s"', event.get('name'))
-            return None
+        parsed = urlparse(event['context']['referer'])
+        block_id = parse_qs(parsed.query)['activate_block_id'][0]
+        return block_id
+    except (KeyError, IndexError):
+        logger.error('Could not get block id for event "%s"', event.get('name'))
+        return None

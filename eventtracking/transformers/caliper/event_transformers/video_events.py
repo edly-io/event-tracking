@@ -13,6 +13,7 @@ EVENTS_ACTION_MAP = {
     'load_video': 'Retrieved',
     'play_video': 'Started',
     'stop_video': 'Ended',
+    'complete_video': 'Ended',
     'pause_video': 'Paused',
     'seek_video': 'JumpedTo',
 }
@@ -57,7 +58,7 @@ class BaseVideoTransformer(CaliperTransformer):
         """
         self.json_load_event()
         caliper_object = caliper_event['object']
-        event = current_event['event'].copy()
+        event = current_event['data'].copy()
 
         course_id = current_event['context']['course_id']
         video_id = event['id']
@@ -98,14 +99,18 @@ class LoadVideoTransformer(BaseVideoTransformer):
         """
         caliper_object = super(LoadVideoTransformer, self).get_object(current_event, caliper_event)
 
-        caliper_event['object']['extensions'].update(current_event['event'])
+        caliper_event['object']['extensions'].update(current_event['data'])
         return caliper_object
 
 
 @TransformerRegistry.register('stop_video')
+@TransformerRegistry.register('complete_video')
 class StopVideoTransformer(BaseVideoTransformer):
     """
-    Transform "stop_video" event.
+    Transform "stop_video" and "complete_video" events.
+
+    Please note that "complete_video" doesn't exist currently but is
+    expected to be added.
     """
 
     def get_object(self, current_event, caliper_event):
@@ -113,7 +118,7 @@ class StopVideoTransformer(BaseVideoTransformer):
         Return transformed object for the caliper event.
         """
         caliper_object = super(StopVideoTransformer, self).get_object(current_event, caliper_event)
-        event = current_event['event'].copy()
+        event = current_event['data'].copy()
 
         if 'currentTime' in event:
             caliper_object['extensions']['currentTime'] = convert_seconds_to_iso(event.pop('currentTime'))
@@ -136,7 +141,7 @@ class PlayPauseVideoTransformer(BaseVideoTransformer):
         """
         caliper_object = super(PlayPauseVideoTransformer, self).get_object(current_event, caliper_event)
 
-        event = current_event['event'].copy()
+        event = current_event['data'].copy()
 
         if 'currentTime' in event:
             del event['currentTime']
@@ -149,7 +154,7 @@ class PlayPauseVideoTransformer(BaseVideoTransformer):
         Return target for the caliper event.
         """
         current_time = convert_seconds_to_iso(
-            seconds=current_event['event']['currentTime']
+            seconds=current_event['data']['currentTime']
         )
 
         return {
@@ -170,7 +175,7 @@ class SeekVideoTransformer(BaseVideoTransformer):
         Return tranformed object for the caliper event.
         """
         caliper_object = super().get_object(current_event, caliper_event)
-        event = current_event['event'].copy()
+        event = current_event['data'].copy()
 
         new_time = convert_seconds_to_iso(
             seconds=event.pop('new_time')

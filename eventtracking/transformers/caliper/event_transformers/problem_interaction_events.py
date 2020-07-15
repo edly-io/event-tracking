@@ -1,7 +1,7 @@
 """
 Transformers for problem interaction events.
 """
-from eventtracking.transformers.caliper.helpers import get_block_id_from_event
+from eventtracking.transformers.caliper.helpers import get_block_id_from_event_referrer
 
 from eventtracking.transformers.caliper.base_transformer import CaliperTransformer
 from eventtracking.transformers.caliper.registry import TransformerRegistry
@@ -41,11 +41,6 @@ class ProblemEventsTransformers(CaliperTransformer):
     """
     Transform problem interaction related events into caliper format.
     This transformer can transform the following events:
-        - problem_check
-        - edx.grades.problem.submitted
-        - showanswer
-        - edx.problem.hint.demandhint_displayed
-        - edx.problem.completed
 
     Currently there is no "edx.problem.completed" event in open edx but
     will be added in future as per the mapping document:
@@ -68,7 +63,12 @@ class ProblemEventsTransformers(CaliperTransformer):
         """
         Return transformed object for caliper event.
         """
-        object_id = get_block_id_from_event(current_event) or current_event['referer']
+        if 'problem_id' in current_event['data']:
+            object_id = current_event['data']['problem_id']
+        elif 'module_id' in current_event['data']:
+            object_id = current_event['data']['module_id']
+        else:
+            object_id = get_block_id_from_event_referrer(current_event) or current_event['context']['referer']
 
         caliper_object = transformed_event['object']
         caliper_object.update({
@@ -76,12 +76,15 @@ class ProblemEventsTransformers(CaliperTransformer):
             'type': OBJECT_TYPE_MAP[current_event['name']],
         })
 
-        if current_event.get('event_source') == 'server':
-            caliper_object['extensions'].update(current_event['event'])
-        else:
+        if current_event['context'].get('event_source') == 'browser':
             caliper_object['extensions'].update({
-                'event': current_event['event']
+                'data': current_event['data']
             })
+        else:
+            caliper_object['extensions'].update(current_event['data'])
+            # problem_id is already being used as object id
+            if 'problem_id' in caliper_object['extensions']:
+                del caliper_object['extensions']['problem_id']
 
         if 'user_id' in caliper_object['extensions']:
             del caliper_object['extensions']['user_id']

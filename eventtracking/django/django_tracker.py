@@ -4,12 +4,12 @@ from __future__ import absolute_import
 
 from importlib import import_module
 
+import six
 from django.conf import settings
 
 from eventtracking import tracker
 from eventtracking.tracker import Tracker
 from eventtracking.locator import ThreadLocalContextLocator
-import six  # pylint: disable=wrong-import-order
 
 
 default_app_config = 'eventtracking.django.apps.EventTrackingConfig'

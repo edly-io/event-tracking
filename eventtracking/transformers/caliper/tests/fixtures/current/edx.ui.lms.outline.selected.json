@@ -19,8 +19,9 @@
         "current_tab": 4,
         "id": "block-v1:edX+DemoX+Demo_Course+type@sequential+block@19a30717eff543078a5d94ae9d6c18a5",
         "tab_count": 10,
+        "target_tab": 8,
         "widget_placement": "top"
     },
-    "name": "edx.ui.lms.sequence.next_selected",
-    "timestamp": "2020-07-14T14:06:42.424987+00:00"
+    "name": "edx.ui.lms.outline.selected",
+    "timestamp": "2020-07-14T14:28:29.829229+00:00"
 }

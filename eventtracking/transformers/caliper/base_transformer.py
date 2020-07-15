@@ -35,10 +35,10 @@ class CaliperTransformer:
 
     def json_load_event(self):
         """
-        Save the JSON decoded event into current event's "event".
+        Save the JSON decoded event into current event's "data".
         """
-        if isinstance(self.event['event'], six.string_types):
-            self.event['event'] = json.loads(self.event['event'])
+        if isinstance(self.event['data'], six.string_types):
+            self.event['data'] = json.loads(self.event['data'])
 
     def transform(self):
         """
@@ -78,7 +78,7 @@ class CaliperTransformer:
         transformed_event.update({
             '@context': CALIPER_EVENT_CONTEXT,
             'id': uuid.uuid4().urn,
-            'eventTime': convert_datetime(self.event.get('time'))
+            'eventTime': convert_datetime(self.event.get('timestamp'))
         })
         transformed_event['object'] = {
             'extensions': {
@@ -106,7 +106,7 @@ class CaliperTransformer:
 
         # Prefer None over empty course_id
         course_id = self.event['context'].get('course_id') or None
-        username = self.event.get('username')
+        username = self.event['context'].get('username')
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
@@ -124,6 +124,6 @@ class CaliperTransformer:
         Adds information of an Entity that represents the referring context.
         """
         transformed_event['referrer'] = {
-            'id': self.event.get('referer'),
+            'id': self.event['context'].get('referer'),
             'type': 'WebPage'
         }

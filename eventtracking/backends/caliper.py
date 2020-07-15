@@ -20,6 +20,9 @@ class CaliperBackend:
         """
         Process the passed event.
         """
+        logger.info('CALIER: before transformation')
+        logger.info(json.dumps(event))
+
         event_name = event.get('name')
         logger.info('Going to transform event "%s" into Caliper format', event_name)
 
