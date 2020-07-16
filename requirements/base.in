@@ -9,4 +9,4 @@ six
 celery
 django-model-utils
 python-dateutil
-isodate
+-e ../edx-analytics-tranformers

@@ -7,9 +7,10 @@ import logging
 
 import six
 
+from edx_analytics_transformers.helpers import GenericJSONEncoder
+
 from eventtracking.backends.routing import RoutingBackend
 from eventtracking.processors.exceptions import EventEmissionExit
-from eventtracking.helpers import GenericJSONEncoder
 from eventtracking.tasks import async_send
 
 

@@ -8,7 +8,8 @@ from celery.utils.log import get_task_logger
 from celery import task
 
 from eventtracking.django.models import RegExFilter
-from eventtracking.helpers import BackendJSONDecoder
+from edx_analytics_transformers.helpers import BackendJSONDecoder
+
 
 logger = get_task_logger(__name__)
 

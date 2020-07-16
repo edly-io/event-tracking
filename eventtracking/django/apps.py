@@ -22,5 +22,5 @@ class EventTrackingConfig(AppConfig):
 
         # pylint: disable=import-outside-toplevel, unused-import
         from eventtracking.django.django_tracker import override_default_tracker
-        from eventtracking.transformers.caliper import event_transformers
+        # from eventtracking.transformers.caliper import event_transformers
         override_default_tracker()
