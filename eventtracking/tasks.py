@@ -7,7 +7,10 @@ import json
 from celery.utils.log import get_task_logger
 from celery import task
 
-from eventtracking.helpers import BackendJSONDecoder
+from json_tricks import loads
+
+from eventtracking.django.models import RegExFilter
+
 
 logger = get_task_logger(__name__)
 
@@ -24,18 +27,14 @@ def async_send(json_backend, json_event, backend_name):
     :param json_event:      JSON encoded event
     :param backend_name:    backend name
     """
-    # To avoid the "Apps aren't loaded yet" error.
-    # pylint: disable=import-outside-toplevel
-    from eventtracking.django.models import RegExFilter
-
     event = json.loads(json_event)
     event_name = event.get('name')
 
     try:
-        backend = json.loads(json_backend, cls=BackendJSONDecoder)
+        backend = loads(json_backend)
     except ValueError:
         logger.exception(
-            'JSONDecodeError: Unable to decode backend: %s.', json_backend
+            'JSONDecodeError: Unable to decode backend: %s.', backend_name
         )
         return
 

@@ -8,3 +8,5 @@ pytz
 six
 celery
 django-model-utils
+edx-django-utils
+json-tricks
