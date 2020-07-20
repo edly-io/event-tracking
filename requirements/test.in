@@ -13,6 +13,3 @@ pytest-cov
 
 # required for tests involving django models
 pytest-django
-
-# required to run use pytest-django without a manage.py file
-# pytest-pythonpath
