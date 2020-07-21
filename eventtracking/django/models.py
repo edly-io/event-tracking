@@ -14,6 +14,9 @@ from edx_django_utils.cache import TieredCache, get_cache_key
 logger = logging.getLogger(__name__)
 
 
+FILTER_CACHE_NAMESPACE = 'eventtracking.regex_filter'
+
+
 def validate_regex_list(value):
     """
     Validate every regular expression in the value by trying to compile
@@ -122,7 +125,10 @@ class RegExFilter(TimeStampedModel):
         """
         Return a list of compiled regular expressions
         """
-        key = get_cache_key(expressions=self.regular_expressions)
+        key = get_cache_key(
+            namespace=FILTER_CACHE_NAMESPACE,
+            expressions=self.regular_expressions
+        )
         cache_response = TieredCache.get_cached_response(key)
 
         if cache_response.is_found:
@@ -157,7 +163,10 @@ class RegExFilter(TimeStampedModel):
         Find and return filter for the provided backend name in the cache.
         If no filter is found in the cache, get one from DB and store it in the cache.
         """
-        filter_cache_key = get_cache_key(backend_name=backend_name)
+        filter_cache_key = get_cache_key(
+            namespace=FILTER_CACHE_NAMESPACE,
+            backend_name=backend_name
+        )
         cache_response = TieredCache.get_cached_response(filter_cache_key)
 
         if cache_response.is_found:
