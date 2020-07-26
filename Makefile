@@ -1,5 +1,4 @@
 export DJANGO_SETTINGS_MODULE=eventtracking.django.tests.settings
-export PYTHONPATH=$(PWD)
 
 MAKE_DOC=make -C doc
 SETUP=python setup.py
@@ -18,7 +17,7 @@ clean: ## delete most git-ignored files
 
 ci: test.unit test.integration style lint ## run all tests and quality checks that are used in CI
 
-test.setup: ## install dependencies for running tests
+test.setup: develop ## install dependencies for running tests
 	pip install -r requirements/dev.txt -q
 
 test: test.unit test.integration test.performance ## run all tests
@@ -39,10 +38,10 @@ lint: ## run pylint on the code
 	pylint --reports=y eventtracking
 
 install: ## install the event-tracking package locally
-	python setup.py install
+	$(SETUP) install
 
 develop:
-	python setup.py develop
+	$(SETUP) develop
 
 doc: doc.html ## generate the documentation
 
