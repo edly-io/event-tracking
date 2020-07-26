@@ -140,14 +140,6 @@ class RegExFilter(TimeStampedModel):
             is_enabled='Enabled' if self.is_enabled else 'Disabled'
         )
 
-    def __repr__(self):
-        return '<{class_name}: backend_name={backend_name} type={type} is_enabled={is_enabled}>'.format(
-            class_name=self.__class__.__name__,
-            backend_name=self.backend_name,
-            type=self.filter_type,
-            is_enabled=self.is_enabled
-        )
-
     @property
     def compiled_expressions(self):
         """
