@@ -29,14 +29,17 @@ class AsyncRoutingBackend(RoutingBackend):
         """
         try:
             processed_event = self.process_event(event)
+            LOG.info('Event %s is processed successfully', event['name'])
+
+            json_event = json.dumps(processed_event, cls=DateTimeJSONEncoder)
+
         except EventEmissionExit:
+            LOG.error('Event %s could not be processed.', event['name'])
             return
 
-        try:
-            json_event = json.dumps(processed_event, cls=DateTimeJSONEncoder)
-        except ValueError:
+        except (ValueError, TypeError):
             LOG.exception(
-                'JSONEncodeError: Unable to encode event:%s', processed_event
+                'JSONEncodeError: Unable to encode event: %s', processed_event, exc_info=True
             )
             return
 
