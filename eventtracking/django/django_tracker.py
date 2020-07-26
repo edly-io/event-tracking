@@ -26,11 +26,11 @@ class DjangoTracker(Tracker):
     """
 
     def __init__(self):
-        backends = self.create_backends_from_settings()
-        processors = self.create_processors_from_settings()
+        backends = self._create_backends_from_settings()
+        processors = self._create_processors_from_settings()
         super(DjangoTracker, self).__init__(backends, ThreadLocalContextLocator(), processors)
 
-    def create_backends_from_settings(self):
+    def _create_backends_from_settings(self):
         """
         Expects the Django setting "EVENT_TRACKING_BACKENDS" to be defined and point
         to a dictionary of backend engine configurations.
@@ -54,11 +54,11 @@ class DjangoTracker(Tracker):
         """
         config = getattr(settings, DJANGO_BACKEND_SETTING_NAME, {})
 
-        backends = self.instantiate_objects(config)
+        backends = self._instantiate_objects(config)
 
         return backends
 
-    def instantiate_objects(self, node):
+    def _instantiate_objects(self, node):
         """
         Recursively traverse a structure to identify dictionaries that represent objects that need to be instantiated
 
@@ -91,7 +91,7 @@ class DjangoTracker(Tracker):
                     ]
                 }
             }
-            root = self.instantiate_objects(tree)
+            root = self._instantiate_objects(tree)
 
         That structure of dicts, lists, and strings will end up with (this example assumes that all keyword arguments to
         constructors were saved as attributes of the same name):
@@ -105,19 +105,19 @@ class DjangoTracker(Tracker):
         result = node
         if isinstance(node, dict):
             if 'ENGINE' in node:
-                result = self.instantiate_from_dict(node)
+                result = self._instantiate_from_dict(node)
             else:
                 result = {}
                 for key, value in six.iteritems(node):
-                    result[key] = self.instantiate_objects(value)
+                    result[key] = self._instantiate_objects(value)
         elif isinstance(node, list):
             result = []
             for child in node:
-                result.append(self.instantiate_objects(child))
+                result.append(self._instantiate_objects(child))
 
         return result
 
-    def instantiate_from_dict(self, values):
+    def _instantiate_from_dict(self, values):
         """
         Constructs an object given a dictionary containing an "ENGINE" key
         which contains the full module path to the class, and an "OPTIONS"
@@ -140,10 +140,10 @@ class DjangoTracker(Tracker):
         except (ValueError, AttributeError, TypeError, ImportError):
             raise ValueError('Cannot find class %s' % name)
 
-        options = self.instantiate_objects(options)
+        options = self._instantiate_objects(options)
         return cls(**options)
 
-    def create_processors_from_settings(self):
+    def _create_processors_from_settings(self):
         """
         Expects the Django setting "EVENT_TRACKING_PROCESSORS" to be defined and
         point to a list of backend engine configurations.
@@ -164,7 +164,7 @@ class DjangoTracker(Tracker):
         """
         config = getattr(settings, DJANGO_PROCESSOR_SETTING_NAME, [])
 
-        processors = self.instantiate_objects(config)
+        processors = self._instantiate_objects(config)
 
         return processors
 
