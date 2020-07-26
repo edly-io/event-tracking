@@ -96,6 +96,7 @@ class RegExFilter(TimeStampedModel):
         verbose_name='Backend name',
         null=False,
         blank=False,
+        db_index=True,
         help_text=(
             'Name of the tracking backend on which this filter should be applied.'
             '<br/>'
