@@ -15,7 +15,9 @@ from eventtracking.tasks import async_send
 
 @ddt.ddt
 class TestAsyncSend(TestCase):
-    """Test async_send task"""
+    """
+    Test async_send task
+    """
 
     def setUp(self):
         super(TestAsyncSend, self).setUp()

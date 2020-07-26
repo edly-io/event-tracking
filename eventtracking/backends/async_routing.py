@@ -1,4 +1,6 @@
-"""Route events to processors and backends"""
+"""
+Route events to processors and backends
+"""
 
 from __future__ import absolute_import
 
@@ -20,12 +22,18 @@ LOG = logging.getLogger(__name__)
 
 class AsyncRoutingBackend(RoutingBackend):
     """
-    Route events to configured backends asynchronously
+    Route events to configured backends asynchronously.
     """
 
     def send(self, event):
         """
         Process the event using all registered processors and send it to all registered backends.
+
+        Arguments:
+            event (dict):   Analytics event dictionary
+
+        Returns:
+            None
         """
         try:
             processed_event = self.process_event(event)

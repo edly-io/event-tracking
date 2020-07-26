@@ -1,4 +1,7 @@
-"""Test the async routing backend"""
+"""
+Test the async routing backend
+"""
+
 from __future__ import absolute_import
 
 import json
@@ -10,7 +13,9 @@ from eventtracking.processors.exceptions import EventEmissionExit
 
 
 class TestAsyncRoutingBackend(TestCase):
-    """Test the async routing backend"""
+    """
+    Test the async routing backend
+    """
 
     def setUp(self):
         super(TestAsyncRoutingBackend, self).setUp()
@@ -56,7 +61,8 @@ class TestAsyncRoutingBackend(TestCase):
     def test_with_value_error_in_one_backend_json_encoding(
         self, mocked_async_send, mocked_log, mocked_dumps
     ):
-        """Test the backend's send method when one of the three backends
+        """
+        Test the backend's send method when one of the three backends
         could not be encoded into json.
         """
         mocked_dumps.side_effect = [ValueError, '{"mocked_backend":1}', '{"mocked_backend":2}']

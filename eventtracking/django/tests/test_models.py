@@ -17,7 +17,9 @@ from eventtracking.django.models import validate_regex_list, RegExFilter, _clean
 
 @ddt.ddt
 class TestRegExFilter(TestCase):
-    """Test RegExFilter model"""
+    """
+    Tests for `RegExFilter` model.
+    """
 
     def setUp(self):
         super(TestRegExFilter, self).setUp()

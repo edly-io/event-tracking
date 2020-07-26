@@ -1,4 +1,6 @@
-"""Test the whitelist processor"""
+"""
+Test the whitelist processor
+"""
 
 from __future__ import absolute_import
 
@@ -11,7 +13,9 @@ from eventtracking.processors.whitelist import NameWhitelistProcessor
 
 
 class TestNameWhitelistProcessor(TestCase):
-    """Test the whitelist processor"""
+    """
+    Test the whitelist processor
+    """
 
     def test_filtering_out(self):
         whitelist = NameWhitelistProcessor(whitelist=[sentinel.allowed_event])
@@ -23,7 +27,9 @@ class TestNameWhitelistProcessor(TestCase):
         self.assert_event_passed_through(whitelist, {'name': sentinel.allowed_event})
 
     def assert_event_passed_through(self, whitelist, event):
-        """Assert that the whitelist allowed the event processing to proceed"""
+        """
+        Assert that the whitelist allowed the event processing to proceed
+        """
         self.assertEqual(whitelist(event), event)
 
     def test_empty_whitelist(self):
@@ -44,7 +50,9 @@ class TestNameWhitelistProcessor(TestCase):
             NameWhitelistProcessor()
 
     def assert_initialization_fails(self):
-        """Assert that the constructor raises the expected initialization exception"""
+        """
+        Assert that the constructor raises the expected initialization exception
+        """
         return self.assertRaisesRegexp(  # pylint: disable=deprecated-method,useless-suppression
             TypeError, r'The NameWhitelistProcessor must be passed')
 
@@ -64,7 +72,9 @@ class TestNameWhitelistProcessor(TestCase):
         self.assert_properly_configured(frozenset([sentinel.allowed_event]))
 
     def assert_properly_configured(self, allowed_names):
-        """Assert that whitelist was configured properly by correctly passing and/or filtering events"""
+        """
+        Assert that whitelist was configured properly by correctly passing and/or filtering events
+        """
         whitelist = NameWhitelistProcessor(whitelist=allowed_names)
         self.assert_event_passed_through(whitelist, {'name': sentinel.allowed_event})
         with self.assertRaises(EventEmissionExit):

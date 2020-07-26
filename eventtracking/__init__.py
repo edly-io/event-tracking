@@ -1,1 +1,3 @@
-"""A simple event tracking library"""
+"""
+A simple event tracking library
+"""

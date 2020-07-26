@@ -1,4 +1,6 @@
-"""Unit tests for the Mongo backend"""
+"""
+Unit tests for the Mongo backend
+"""
 from __future__ import absolute_import
 
 from unittest import TestCase
@@ -12,7 +14,9 @@ from eventtracking.backends.mongodb import MongoBackend
 
 
 class TestMongoBackend(TestCase):
-    """Unit tests for the Mongo backend"""
+    """
+    Unit tests for the Mongo backend
+    """
 
     def setUp(self):
         super(TestMongoBackend, self).setUp()
@@ -38,7 +42,9 @@ class TestMongoBackend(TestCase):
         # as the first argument to collection.insert
 
         def first_argument(call):
-            """Extract the first argument from a `mock.call`"""
+            """
+            Extract the first argument from a `mock.call`
+            """
             _, args, _ = call
             return args[0]
 

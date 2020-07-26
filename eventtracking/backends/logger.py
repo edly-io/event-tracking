@@ -1,4 +1,6 @@
-"""Event tracker backend that saves events to a python logger."""
+"""
+Event tracker backend that saves events to a python logger.
+"""
 
 from __future__ import absolute_import
 
@@ -33,7 +35,9 @@ class LoggerBackend:
         self.log = getattr(self.event_logger, level.lower())
 
     def send(self, event):
-        """Send the event to the standard python logger"""
+        """
+        Send the event to the standard python logger
+        """
         event_str = json.dumps(event, cls=DateTimeJSONEncoder)
 
         # TODO: do something smarter than simply dropping the event on
@@ -43,7 +47,9 @@ class LoggerBackend:
 
 
 class DateTimeJSONEncoder(json.JSONEncoder):
-    """JSON encoder aware of datetime.datetime and datetime.date objects"""
+    """
+    JSON encoder aware of datetime.datetime and datetime.date objects
+    """
 
     def default(self, obj):  # lint-amnesty, pylint: disable=arguments-differ, method-hidden
         """

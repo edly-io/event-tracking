@@ -49,17 +49,23 @@ class Tracker:
         return self.context_locator.get()
 
     def get_backend(self, name):
-        """Gets the backend that was configured with `name`"""
+        """
+        Gets the backend that was configured with `name`.
+        """
         return self.backends[name]
 
     @property
     def processors(self):
-        """The list of registered processors"""
+        """
+        The list of registered processors
+        """
         return self.routing_backend.processors
 
     @property
     def backends(self):
-        """The dictionary of registered backends"""
+        """
+        The dictionary of registered backends
+        """
         return self.routing_backend.backends
 
     def emit(self, name=None, data=None):
@@ -140,5 +146,7 @@ def get_tracker(name=DEFAULT_TRACKER_NAME):
 
 
 def emit(name=None, data=None):
-    """Calls `Tracker.emit` on the default global tracker"""
+    """
+    Calls `Tracker.emit` on the default global tracker
+    """
     return get_tracker().emit(name=name, data=data)

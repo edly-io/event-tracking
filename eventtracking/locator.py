@@ -23,7 +23,9 @@ class DefaultContextLocator:
         self.context = OrderedDict()
 
     def get(self):
-        """Get a reference to the context."""
+        """
+        Get a reference to the context.
+        """
         return self.context
 
 
@@ -45,7 +47,9 @@ class ThreadLocalContextLocator:
         self.thread_local_data = None
 
     def get(self):
-        """Return a reference to a thread-specific context"""
+        """
+        Return a reference to a thread-specific context
+        """
         if not self.thread_local_data:
             self.thread_local_data = threading.local()
 

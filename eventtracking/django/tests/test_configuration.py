@@ -1,4 +1,6 @@
-"""Tests various configuration settings for the django tracker"""
+"""
+Tests various configuration settings for the django tracker
+"""
 
 from __future__ import absolute_import
 
@@ -16,7 +18,9 @@ TEST_TRACKER_NAME = 'django.test.tracker'
 
 
 class TestConfiguration(TestCase):
-    """Tests various configuration settings for the django tracker"""
+    """
+    Tests various configuration settings for the django tracker
+    """
 
     def setUp(self):
         super(TestConfiguration, self).setUp()
@@ -34,7 +38,9 @@ class TestConfiguration(TestCase):
         self.assertTrue(isinstance(fake_backend, TrivialFakeBackend))
 
     def configure_tracker(self):
-        """Reads the tracker configuration from the Django settings"""
+        """
+        Reads the tracker configuration from the Django settings
+        """
         self.tracker = DjangoTracker()
 
     @override_settings(EVENT_TRACKING_BACKENDS={
@@ -235,18 +241,26 @@ class TestConfiguration(TestCase):
 
 
 class TrivialFakeBackend:
-    """A trivial fake backend without any options"""
+    """
+    A trivial fake backend without any options
+    """
 
     def send(self, event):
-        """Don't actually send the event anywhere"""
+        """
+        Don't actually send the event anywhere
+        """
 
 
 class NotABackend:
-    """A class that is not a backend"""
+    """
+    A class that is not a backend
+    """
 
 
 class FakeBackendWithOptions(TrivialFakeBackend):
-    """A trivial fake backend with options"""
+    """
+    A trivial fake backend with options
+    """
 
     def __init__(self, **kwargs):
         super(FakeBackendWithOptions, self).__init__()
@@ -254,14 +268,18 @@ class FakeBackendWithOptions(TrivialFakeBackend):
 
 
 class NopProcessor:
-    """Changes every event"""
+    """
+    Changes every event
+    """
 
     def __call__(self, event):
         pass
 
 
 class ProcessorWithOptions:
-    """Takes in an argument"""
+    """
+    Takes in an argument
+    """
 
     def __init__(self, **kwargs):
         self. option = kwargs.get('option', None)
@@ -271,7 +289,9 @@ class ProcessorWithOptions:
 
 
 class NestedBackend(TrivialFakeBackend):
-    """Supports other backends as children"""
+    """
+    Supports other backends as children
+    """
 
     def __init__(self, backends=None, processors=None, **_kwargs):
         self.backends = backends or {}

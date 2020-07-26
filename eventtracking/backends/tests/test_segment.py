@@ -1,4 +1,6 @@
-"""Test the segment.com backend"""
+"""
+Test the segment.com backend
+"""
 
 from __future__ import absolute_import
 
@@ -10,7 +12,9 @@ from eventtracking.backends.segment import SegmentBackend
 
 
 class TestSegmentBackend(TestCase):
-    """Test the segment.com backend"""
+    """
+    Test the segment.com backend
+    """
 
     def setUp(self):
         super(TestSegmentBackend, self).setUp()
@@ -38,7 +42,9 @@ class TestSegmentBackend(TestCase):
         self.assert_no_event_emitted()
 
     def assert_no_event_emitted(self):
-        """Ensure no event was actually sent to segment.com"""
+        """
+        Ensure no event was actually sent to segment.com
+        """
         self.assertEqual(len(self.mock_analytics.mock_calls), 0)
 
     def test_missing_context(self):
@@ -176,7 +182,9 @@ class TestSegmentBackend(TestCase):
 
 
 class TestSegmentBackendMissingDependency(TestCase):
-    """Test the segment.com backend without the package installed"""
+    """
+    Test the segment.com backend without the package installed
+    """
 
     def test_no_analytics_api(self):
         event = {

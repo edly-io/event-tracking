@@ -16,10 +16,16 @@ logger = logging.getLogger(__name__)
 
 def validate_regex_list(value):
     """
-    Validate every regular expression in the value by trying to compile
-    it.
+    Validate every regular expression in the `value` by trying to compile it.
 
-    Raise Validation error if any reg exp is failed to compile.
+    Arguments:
+        value (str):    A string containing `newline` seperated list of regular expressions
+
+    Returns:
+        None
+
+    Raises:
+        ValidationError:    Error message contains the list of invalid expressions.
     """
     _, invalid_expressions = _clean_expressions(value)
 
@@ -32,9 +38,18 @@ def validate_regex_list(value):
 
 def _clean_expressions(expressions_string):
     """
-    First clean the expressions list string by splitting using \n and then stripping
-    the whitespace characters. Then return a tuple containing compiled and invalid
-    expressions.
+    Compile the valid regular expressions from the provided `expressions_string`
+
+    Compile the "whitespace-stripped" regular expression in the `expressions_string` list,
+    separated by `\n`.
+
+    Arguments:
+        expressions_string (str):   `\n` separated list of regular expressions
+
+    Returns:
+        tuple   :   (compiled_expressions, invalid_expressions)
+                    A tuple containing the list of compiled expressions alongwith the list of
+                    invalid regular expressions.
     """
     expressions = expressions_string.split('\n')
     raw_expressions = [expression.strip() for expression in expressions]
@@ -43,8 +58,15 @@ def _clean_expressions(expressions_string):
 
 def _compile_and_validate_expressions(expressions_list):
     """
-    Compile and validate every reg ex in the list and return a tuple containing
-    lists of compiled and invalid expressions.
+    Compile the regular expressions in `expressions_list` and invalidate the invalid ones.
+
+    Arguments:
+        expressions_list (list):   A list containing regular expression strings.
+
+    Returns:
+        tuple   :   (compiled_expressions, invalid_expressions)
+                    A tuple containing the list of compiled expressions alongwith the list of
+                    invalid regular expressions.
     """
     invalid_regex_expressions = []
     compiled_regex_expressions = []
@@ -59,7 +81,7 @@ def _compile_and_validate_expressions(expressions_list):
 
 class RegExFilter(TimeStampedModel):
     """
-    This filter uses regular expressions to filter the events
+    A filter model to filter the events using regular expressions.
     """
 
     BLOCKLIST = 'blocklist'
@@ -117,10 +139,29 @@ class RegExFilter(TimeStampedModel):
             is_enabled='Enabled' if self.is_enabled else 'Disabled'
         )
 
+    def __repr__(self):
+        return '<{class_name}: backend_name={backend_name} type={type} is_enabled={is_enabled}>'.format(
+            class_name=self.__class__.__name__,
+            backend_name=self.backend_name,
+            type=self.filter_type,
+            is_enabled=self.is_enabled
+        )
+
     @property
     def compiled_expressions(self):
         """
-        Return a list of compiled regular expressions
+        Return a list of compiled regular expressions.
+
+        If the cached compiled expressions are found matching the expressions string of the filter,
+        return the value from the cache.
+        Otherwise, compile the `\n` separated list of regular expressions in the `regular_expressions`
+        and return if after storing in the cache.
+
+        Arguments:
+            None
+
+        Returns:
+            list:   list of compiled expressions
         """
         key = get_cache_key(expressions=self.regular_expressions)
         cache_response = TieredCache.get_cached_response(key)
@@ -145,17 +186,34 @@ class RegExFilter(TimeStampedModel):
     @classmethod
     def get_latest_enabled_filter(cls, backend_name=None):
         """
-        Wrapper method for _get_latest_enabled_filter. First find the
-        required filter from the cache and return it if found. Otherwise
-        get the filter from DB and cache it.
+        Return the last modified, enabled filter for the backend matching the `backend_name`.
+
+        If no `backend_name` is provided, return the last modified, enabled filter
+        for any backend.
+        Return `None` if there is no filter matching the criteria.
+
+        Arguments:
+            backend_name (str):    Name of the backend for which the filter is required.
+
+        Returns:
+            RegExFilter or None
         """
         return cls._get_cached_filter(backend_name=backend_name)
 
     @classmethod
     def _get_cached_filter(cls, backend_name):
         """
-        Find and return filter for the provided backend name in the cache.
-        If no filter is found in the cache, get one from DB and store it in the cache.
+        Return the last modified, enabled filter for the backend matching the `backend_name`.
+
+        First look for the filter in the cache and return its value from there if found.
+        If not found in the cache, call the `_get_latest_enabled_filter` method to get the
+        filter and store it in the cache before returning it.
+
+        Arguments:
+            backend_name (str):    Name of the backend for which the filter is required.
+
+        Returns:
+            RegExFilter or None
         """
         filter_cache_key = get_cache_key(backend_name=backend_name)
         cache_response = TieredCache.get_cached_response(filter_cache_key)
@@ -175,12 +233,17 @@ class RegExFilter(TimeStampedModel):
     @classmethod
     def _get_latest_enabled_filter(cls, backend_name=None):
         """
-        Return the last modified filter.
+        Return the last modified, enabled filter for the backend matching the `backend_name`.
 
-        If backend_name is provided, search through filters matching the backend_name
-        otherwise search among all available filters.
+        If no `backend_name` is provided, return the last modified, enabled filter
+        for any backend.
+        Return `None` if there is no filter matching the criteria.
 
-        Return None if there is no filter exists that matches the criteria.
+        Arguments:
+            backend_name (str):    Name of the backend for which the filter is required.
+
+        Returns:
+            RegExFilter or None
         """
         queryset = cls.objects.filter(is_enabled=True)
 
@@ -191,8 +254,15 @@ class RegExFilter(TimeStampedModel):
 
     def is_string_a_match(self, string):
         """
-        Return True if a string matches any expression of
-        this filter, otherwise return False.
+        Match the string with the current filter's compiled regular expressions.
+
+        Return `True`if the string is a match otherwise return `False`.
+
+        Arguments:
+            string (str):   string to be matched with regular expressions.
+
+        Returns:
+            bool
         """
         for expression in self.compiled_expressions:
             if expression.match(string):
@@ -201,14 +271,19 @@ class RegExFilter(TimeStampedModel):
 
     def string_passes_test(self, string):
         """
-        Returns True if a string passes this filter w.r.t. to
-        the filter's type.
+        Return `True` if a string passes current filter w.r.t. to the filter's type.
 
         A string passes the test if:
-            - string matches any regular expression and the
+            - `string` matches any regular expression and the
               filter type is set to "allowlist"
-            - string does not match any regular expression and
+            - `string` does not match any regular expression and
               the filter type is set to "blocklist"
+
+        Arguments:
+            string (str):   string to be matched with regular expressions.
+
+        Returns:
+            bool
         """
         is_a_match = self.is_string_a_match(string)
         if (

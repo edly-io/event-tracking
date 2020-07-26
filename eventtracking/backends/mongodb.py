@@ -1,4 +1,6 @@
-"""MongoDB event tracker backend."""
+"""
+MongoDB event tracker backend.
+"""
 
 from __future__ import absolute_import
 
@@ -14,7 +16,9 @@ log = logging.getLogger(__name__)
 
 
 class MongoBackend:
-    """Class for a MongoDB event tracker Backend"""
+    """
+    Class for a MongoDB event tracker Backend
+    """
 
     def __init__(self, **kwargs):
         """
@@ -73,7 +77,9 @@ class MongoBackend:
         self._create_indexes()
 
     def _create_indexes(self):
-        """Ensures the proper fields are indexed"""
+        """
+        Ensures the proper fields are indexed
+        """
         # WARNING: The collection will be locked during the index
         # creation. If the collection has a large number of
         # documents in it, the operation can take a long time.
@@ -85,7 +91,9 @@ class MongoBackend:
         self.collection.ensure_index('name')
 
     def send(self, event):
-        """Insert the event in to the Mongo collection"""
+        """
+        Insert the event in to the Mongo collection
+        """
         try:
             self.collection.insert(event, manipulate=False)
         except (PyMongoError, BSONError):

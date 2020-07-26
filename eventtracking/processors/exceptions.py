@@ -1,4 +1,6 @@
-"""Custom exceptions that are raised by this package"""
+"""
+Custom exceptions that are raised by this package
+"""
 
 
 class EventEmissionExit(Exception):

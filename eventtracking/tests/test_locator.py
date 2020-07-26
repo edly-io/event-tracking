@@ -1,4 +1,6 @@
-"""Test context locators."""
+"""
+Test context locators.
+"""
 
 from __future__ import absolute_import
 
@@ -11,7 +13,9 @@ from eventtracking import locator
 
 
 class TestThreadLocalContextLocator(TestCase):
-    """Test context locators."""
+    """
+    Test context locators.
+    """
 
     def test_multithreaded_context(self):
         self.locator = locator.ThreadLocalContextLocator()  # pylint: disable=attribute-defined-outside-init
@@ -28,7 +32,9 @@ class TestThreadLocalContextLocator(TestCase):
         parent_sent_event = threading.Event()
 
         def worker():
-            """A simulated child thread"""
+            """
+            A simulated child thread
+            """
             # Setup a context in this thread.  This should not inherit the parent thread context!
             self.locator.get()['child'] = thread_context
 

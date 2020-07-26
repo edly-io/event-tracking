@@ -1,4 +1,6 @@
-"""Event tracking backend that sends events to segment.com"""
+"""
+Event tracking backend that sends events to segment.com
+"""
 
 from __future__ import absolute_import
 from six.moves.urllib.parse import urlunsplit
@@ -48,7 +50,9 @@ class SegmentBackend:
     """
 
     def send(self, event):
-        """Use the segment.com python API to send the event to segment.com"""
+        """
+        Use the segment.com python API to send the event to segment.com
+        """
         if analytics is None:
             return
 

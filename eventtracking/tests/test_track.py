@@ -15,7 +15,9 @@ from pytz import UTC  # pylint: disable=wrong-import-order
 
 
 class TestTrack(TestCase):
-    """Tests cases for the event tracking module."""
+    """
+    Tests cases for the event tracking module.
+    """
 
     def setUp(self):
         super(TestTrack, self).setUp()
@@ -31,7 +33,9 @@ class TestTrack(TestCase):
         mock_datetime.now.return_value = self._expected_timestamp
 
     def configure_mock_backends(self, number_of_mocks):
-        """Ensure the tracking module has the requisite number of mock backends"""
+        """
+        Ensure the tracking module has the requisite number of mock backends
+        """
         backends = {}
         for i in range(number_of_mocks):
             name = 'mock{0}'.format(i)
@@ -44,7 +48,9 @@ class TestTrack(TestCase):
         self._mock_backend = self._mock_backends[0]
 
     def get_mock_backend(self, index):
-        """Get the mock backend created by `configure_mock_backends`"""
+        """
+        Get the mock backend created by `configure_mock_backends`
+        """
         return self.tracker.get_backend('mock{0}'.format(index))
 
     def test_event_simple_event_without_data(self):
@@ -53,7 +59,9 @@ class TestTrack(TestCase):
         self.assert_backend_called_with(sentinel.name)
 
     def assert_backend_called_with(self, name, data=None, context=None, backend=None):
-        """Ensures the backend is called exactly once with the expected data."""
+        """
+        Ensures the backend is called exactly once with the expected data.
+        """
 
         self.assert_exact_backend_calls([(name, context, data)], backend=backend)
 

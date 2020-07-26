@@ -1,4 +1,6 @@
-"""A Django settings file for testing"""
+"""
+A Django settings file for testing
+"""
 
 from __future__ import absolute_import
 

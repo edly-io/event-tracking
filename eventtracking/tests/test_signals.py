@@ -11,7 +11,9 @@ from eventtracking.django.models import RegExFilter, _clean_expressions
 
 
 class TestSignals(TestCase):
-    """Test the signal handles"""
+    """
+    Test the signal handlers.
+    """
 
     def setUp(self):
         super(TestSignals, self).setUp()
@@ -54,7 +56,7 @@ class TestSignals(TestCase):
 
         _ = test_filter.compiled_expressions
 
-        # no previous cache. _clean expressions will be called
+        # no previous cache. _clean_expressions will be called
         mocked_clean_expressions.assert_called_once_with(test_filter.regular_expressions)
 
         mocked_clean_expressions.reset_mock()

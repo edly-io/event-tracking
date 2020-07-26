@@ -1,4 +1,6 @@
-"""A django specific tracker"""
+"""
+A django specific tracker
+"""
 
 from __future__ import absolute_import
 
@@ -170,6 +172,8 @@ class DjangoTracker(Tracker):
 
 
 def override_default_tracker():
-    """Sets the default tracker to a DjangoTracker"""
+    """
+    Sets the default tracker to a DjangoTracker
+    """
     if getattr(settings, DJANGO_ENABLED_SETTING_NAME, False):
         tracker.register_tracker(DjangoTracker())

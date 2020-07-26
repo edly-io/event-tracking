@@ -13,14 +13,18 @@ from six.moves import range
 
 
 class InMemoryBackend:
-    """A backend that simply stores all events in memory"""
+    """
+    A backend that simply stores all events in memory
+    """
 
     def __init__(self):
         super(InMemoryBackend, self).__init__()
         self.events = []
 
     def send(self, event):
-        """Store the event in a list"""
+        """
+        Store the event in a list
+        """
         self.events.append(event)
 
 

@@ -1,4 +1,6 @@
-"""Route events to processors and backends"""
+"""
+Route events to processors and backends
+"""
 
 from __future__ import absolute_import
 

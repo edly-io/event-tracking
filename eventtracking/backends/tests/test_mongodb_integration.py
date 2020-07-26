@@ -81,6 +81,8 @@ class TestMongoIntegration(IntegrationTestCase):
         return left == right
 
     def remove_microseconds_from_timestamps(self, event):
-        """Truncate the microseconds from the event timestamp"""
+        """
+        Truncate the microseconds from the event timestamp
+        """
         event['timestamp'] = event['timestamp'].replace(microsecond=0)
         event['data']['current_time'] = event['data']['current_time'].replace(microsecond=0)

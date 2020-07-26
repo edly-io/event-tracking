@@ -1,5 +1,5 @@
 """
-Contains Admin class(es) for the django app
+Contains Admin class(es) for models in the django app.
 """
 from django.contrib import admin
 

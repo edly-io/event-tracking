@@ -1,4 +1,6 @@
-"""Test the logging backend"""
+"""
+Test the logging backend
+"""
 
 from __future__ import absolute_import
 
@@ -14,7 +16,9 @@ from eventtracking.backends.logger import LoggerBackend
 
 
 class TestLoggerBackend(TestCase):
-    """Test the logging backend"""
+    """
+    Test the logging backend
+    """
 
     def setUp(self):
         super(TestLoggerBackend, self).setUp()
@@ -37,7 +41,9 @@ class TestLoggerBackend(TestCase):
         self.assert_event_emitted({})
 
     def assert_event_emitted(self, event):
-        """Asserts exactly one event was emitted"""
+        """
+        Asserts exactly one event was emitted
+        """
         self.mock_logger.info.assert_called_once_with(
             json.dumps(event)
         )
@@ -48,7 +54,9 @@ class TestLoggerBackend(TestCase):
         self.assert_no_events_emitted()
 
     def assert_no_events_emitted(self):
-        """Asserts no events have been emitted"""
+        """
+        Asserts no events have been emitted
+        """
         self.assertFalse(self.mock_logger.info.called)
 
     def test_big_event(self):
