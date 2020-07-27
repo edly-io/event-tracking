@@ -19,7 +19,7 @@ def validate_regex_list(value):
     Validate every regular expression in the `value` by trying to compile it.
 
     Arguments:
-        value (str):    A string containing `newline` seperated list of regular expressions
+        value (str):    Multiline string where each line represents a regular expression
 
     Returns:
         None
@@ -41,10 +41,10 @@ def _clean_expressions(expressions_string):
     Compile the valid regular expressions from the provided `expressions_string`
 
     Compile the "whitespace-stripped" regular expression in the `expressions_string` list,
-    separated by `\n`.
+    separated by linebreak.
 
     Arguments:
-        expressions_string (str):   `\n` separated list of regular expressions
+        expressions_string (str):   Multiline string where each line represents a regular expression
 
     Returns:
         tuple   :   (compiled_expressions, invalid_expressions)
@@ -64,7 +64,7 @@ def _compile_and_validate_expressions(expressions_list):
         expressions_list (list):   A list containing regular expression strings.
 
     Returns:
-        tuple   :   (compiled_expressions, invalid_expressions)
+        tuple :     (compiled_expressions, invalid_expressions)
                     A tuple containing the list of compiled expressions alongwith the list of
                     invalid regular expressions.
     """

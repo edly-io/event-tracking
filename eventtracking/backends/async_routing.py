@@ -23,6 +23,11 @@ LOG = logging.getLogger(__name__)
 class AsyncRoutingBackend(RoutingBackend):
     """
     Route events to configured backends asynchronously.
+
+    After processing the event through the configured processors, each of the backends
+    is then JSON serialized and then is passed along with the processed event to
+    the celery task `async_send` where the backend will be deserialized for sending
+    the processed event.
     """
 
     def send(self, event):
