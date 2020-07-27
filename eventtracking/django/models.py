@@ -160,20 +160,20 @@ class RegExFilter(TimeStampedModel):
         cache_response = TieredCache.get_cached_response(key)
 
         if cache_response.is_found:
-            logger.info('Compiled expressions found in cache for filter "%s"', self)
+            logger.info('Compiled expressions found in cache for filter "{}"'.format(self))
             return cache_response.value
 
-        logger.info('Compiled expressions not found in cache for filter "%s"', self)
+        logger.info('Compiled expressions not found in cache for filter "{}"'.format(self))
         compiled_expressions, invalid_expressions = _clean_expressions(self.regular_expressions)
 
         if invalid_expressions:
             logger.error(
-                'The following invalid expressions were found in the filter: %s',
-                ', '.join(invalid_expressions)
-            )
+                'The following invalid expressions were found in the filter: {}'.format(
+                    ', '.join(invalid_expressions)
+                ))
 
         TieredCache.set_all_tiers(key, compiled_expressions)
-        logger.info('Added compiled expressions in cache for filter "%s"', self)
+        logger.info('Added compiled expressions in cache for filter "{}"'.format(self))
         return compiled_expressions
 
     @classmethod
@@ -212,14 +212,14 @@ class RegExFilter(TimeStampedModel):
         cache_response = TieredCache.get_cached_response(filter_cache_key)
 
         if cache_response.is_found:
-            logger.info('Filter is found in cache for backend "%s"', backend_name)
+            logger.info('Filter is found in cache for backend "{}"'.format(backend_name))
             regex_filter = cache_response.value
         else:
-            logger.info('No filter was found in cache for backend "%s"', backend_name)
+            logger.info('No filter was found in cache for backend "{}"'.format(backend_name))
             regex_filter = cls._get_latest_enabled_filter(backend_name=backend_name)
 
             TieredCache.set_all_tiers(filter_cache_key, regex_filter)
-            logger.info('Filter has been stored in cache for backend "%s"', backend_name)
+            logger.info('Filter has been stored in cache for backend "{}"'.format(backend_name))
 
         return regex_filter
 

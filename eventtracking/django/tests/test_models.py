@@ -89,9 +89,9 @@ class TestRegExFilter(TestCase):
             re.compile(ex) for ex in valid_regular_expressions
         ])
         mocked_logger.error.assert_called_once_with(
-            'The following invalid expressions were found in the filter: %s',
-            ', '.join(invalid_regular_exressions)
-        )
+            'The following invalid expressions were found in the filter: {}'.format(
+                ', '.join(invalid_regular_exressions)
+            ))
 
     @patch('eventtracking.django.models._clean_expressions', side_effect=_clean_expressions)
     def test_compiled_expressions_caching(self, mocked_clean_expressions):
@@ -126,12 +126,12 @@ class TestRegExFilter(TestCase):
 
         mocked_objects_filter.assert_called_once_with(is_enabled=True)
         self.assertIn(
-            call('No filter was found in cache for backend "%s"', 'first'),
+            call('No filter was found in cache for backend "first"'),
             mocked_logger.info.mock_calls
         )
 
         self.assertIn(
-            call('Filter has been stored in cache for backend "%s"', 'first'),
+            call('Filter has been stored in cache for backend "first"'),
             mocked_logger.info.mock_calls
         )
 
@@ -140,7 +140,7 @@ class TestRegExFilter(TestCase):
 
         regex_filter = RegExFilter.get_latest_enabled_filter(backend_name='first')
         mocked_objects_filter.assert_not_called()
-        mocked_logger.info.assert_called_once_with('Filter is found in cache for backend "%s"', 'first')
+        mocked_logger.info.assert_called_once_with('Filter is found in cache for backend "first"')
 
         self.assertEqual(regex_filter, first_regex_filter)
 

@@ -34,7 +34,7 @@ def async_send(json_backend, json_event, backend_name):
         backend = loads(json_backend)
     except ValueError:
         logger.exception(
-            'JSONDecodeError: Unable to decode backend: %s.', backend_name
+            'JSONDecodeError: Unable to decode backend: {}'.format(backend_name)
         )
         return
 
@@ -42,20 +42,22 @@ def async_send(json_backend, json_event, backend_name):
 
     if not regex_filter:
         logger.warning('Regular Expression Filter does not have any enabled '
-                       'configurations for backend "%s". Allowing the event "%s" to pass through.',
-                       backend_name, event_name)
+                       'configurations for backend "{backend}". '
+                       'Allowing the event "{event_name}" to pass through.'.format(
+                           backend=backend_name, event_name=event_name
+                       ))
 
     elif not regex_filter.string_passes_test(event_name):
         logger.info(
-            'Event "%s" is not allowed to be processed by backend "%s"',
-            event_name, backend_name
-        )
+            'Event "{event_name}" is not allowed to be processed by backend "{backend}"'.format(
+                event_name=event_name, backend=backend_name
+            ))
         return
 
     else:
         logger.info(
-            'Event "%s" is allowed to be processed by backend "%s"',
-            event_name, backend_name
-        )
+            'Event "{event_name}" is allowed to be processed by backend "{backend}"'.format(
+                event_name=event_name, backend=backend_name
+            ))
 
     backend.send(event)

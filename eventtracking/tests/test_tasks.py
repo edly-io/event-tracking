@@ -50,9 +50,9 @@ class TestAsyncSend(TestCase):
 
         mocked_logger.warning.assert_called_once_with(
             'Regular Expression Filter does not have any enabled configurations'
-            ' for backend "%s". Allowing the event "%s" to pass through.',
-            self.backend_name, str(sentinel.name)
-        )
+            ' for backend "{}". Allowing the event "{}" to pass through.'.format(
+                self.backend_name, str(sentinel.name)
+            ))
         self.mocked_backend.send.assert_called_once_with(self.event)
 
     @patch('eventtracking.tasks.loads')
@@ -78,16 +78,16 @@ class TestAsyncSend(TestCase):
 
         if should_pass_test:
             mocked_logger.info.assert_called_once_with(
-                'Event "%s" is allowed to be processed by backend "%s"',
-                event_name, self.backend_name
-            )
+                'Event "{}" is allowed to be processed by backend "{}"'.format(
+                    event_name, self.backend_name
+                ))
             self.mocked_backend.send.assert_called_once_with(self.event)
 
         else:
             mocked_logger.info.assert_called_once_with(
-                'Event "%s" is not allowed to be processed by backend "%s"',
-                event_name, self.backend_name
-            )
+                'Event "{}" is not allowed to be processed by backend "{}"'.format(
+                    event_name, self.backend_name
+                ))
 
             self.mocked_backend.send.assert_not_called()
 

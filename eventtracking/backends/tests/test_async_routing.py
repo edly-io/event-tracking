@@ -51,7 +51,8 @@ class TestAsyncRoutingBackend(TestCase):
         backend.send(self.sample_event)
 
         mocked_log.exception.assert_called_once_with(
-            'JSONEncodeError: Unable to encode event: %s', self.sample_event, exc_info=True
+            'JSONEncodeError: Unable to encode event: {}'.format(self.sample_event),
+            exc_info=True
         )
         mocked_async_send.assert_not_called()
 
@@ -71,7 +72,7 @@ class TestAsyncRoutingBackend(TestCase):
         backend = AsyncRoutingBackend(backends=self.mocked_backends)
         backend.send(self.sample_event)
 
-        mocked_log.exception.assert_called_once_with('JSONEncodeError: Unable to encode backend: %s', '0')
+        mocked_log.exception.assert_called_once_with('JSONEncodeError: Unable to encode backend: 0')
 
         mocked_async_send.assert_has_calls([
             call('{"mocked_backend":1}', json_event, backend_name='1'),

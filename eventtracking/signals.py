@@ -37,9 +37,9 @@ def invalidate_backend_filter_cache(instance, *args, **kwargs):   # pylint: disa
         args     (list):             list of remaining positional arguments
         kwargs   (dict):             list of positional arguments
     """
-    logger.info('Filter for backend "%s" is updated. '
+    logger.info('Filter for backend "{}" is updated. '
                 'Invalidating filter cache for this backend '
-                'as well as the default filter.', instance.backend_name)
+                'as well as the default filter.'.format(instance.backend_name))
     _remove_from_cache(backend_name=instance.backend_name)
 
     # cache key if no backend is specified
@@ -60,9 +60,8 @@ def invalidate_compiled_expressions_cache(instance, created, *args, **kwargs):  
         kwargs   (dict):             list of positional arguments
     """
     if not created:
-        logger.info('Filter for backend "%s" is updated. '
+        logger.info('Filter for backend "{}" is updated. '
                     'Invalidating compiled expressions cache for regular expressions '
-                    'that match this backend\'s.',
-                    instance.backend_name)
+                    'that match this backend\'s.'.format(instance.backend_name))
 
         _remove_from_cache(expressions=instance.regular_expressions)
