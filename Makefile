@@ -2,6 +2,7 @@ export DJANGO_SETTINGS_MODULE=eventtracking.django.tests.settings
 
 MAKE_DOC=make -C doc
 SETUP=python setup.py
+PYTEST=python -m pytest
 
 .PHONY: lint requirements style test.unit upgrade
 
@@ -23,13 +24,13 @@ test.setup: ## install dependencies for running tests
 test: test.unit test.integration test.performance ## run all tests
 
 test.unit: test.setup ## run unit tests
-	python -m pytest --cov-report=html --cov-report term-missing  --cov-branch -k 'not integration and not performance' --cov-fail-under=95 --cov=eventtracking
+	$(PYTEST) --cov-report=html --cov-report term-missing  --cov-branch -k 'not integration and not performance' --cov-fail-under=95 --cov=eventtracking
 
 test.integration: test.setup ## run integration tests
-	pytest --verbose -s -k 'integration'
+	$(PYTEST) --verbose -s -k 'integration'
 
 test.performance: test.setup ## run performance tests
-	pytest --verbose -s -k 'performance'
+	$(PYTEST) --verbose -s -k 'performance'
 
 style: ## run pycodestyle on the code
 	pycodestyle eventtracking
