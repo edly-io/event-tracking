@@ -4,7 +4,6 @@ from __future__ import absolute_import
 
 from importlib import import_module
 
-import six
 from django.conf import settings
 
 from eventtracking import tracker
@@ -108,7 +107,7 @@ class DjangoTracker(Tracker):
                 result = self.instantiate_from_dict(node)
             else:
                 result = {}
-                for key, value in six.iteritems(node):
+                for key, value in node.items():
                     result[key] = self.instantiate_objects(value)
         elif isinstance(node, list):
             result = []

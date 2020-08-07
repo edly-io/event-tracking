@@ -4,9 +4,7 @@ from __future__ import absolute_import
 
 from unittest import TestCase
 
-import six
 from mock import MagicMock, sentinel
-from six.moves import range
 
 from eventtracking.backends.routing import RoutingBackend
 from eventtracking.processors.exceptions import EventEmissionExit
@@ -84,7 +82,7 @@ class TestRoutingBackend(TestCase):
         backends['1'].send.side_effect = RuntimeError
         router = RoutingBackend(backends=backends)
         router.send(self.sample_event)
-        for backend in six.itervalues(backends):
+        for backend in backends.values():
             backend.send.assert_called_once_with(self.sample_event)
 
     def test_multiple_processors(self):
