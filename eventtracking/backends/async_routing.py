@@ -24,6 +24,9 @@ class AsyncRoutingBackend(RoutingBackend):
     def send(self, event):
         """
         Process the event using all registered processors and send it to all registered backends.
+
+        Arguments:
+            event (dict) :  Open edX generated analytics event
         """
         try:
             processed_event = self.process_event(event)

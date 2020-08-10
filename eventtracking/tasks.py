@@ -23,9 +23,10 @@ def async_send(json_backend, json_event, backend_name):
     If the event is allowed to be processed by the filter, call the backend's send to
     process event asynchronously.
 
-    :param json_backend:    JSON encoded backend
-    :param json_event:      JSON encoded event
-    :param backend_name:    backend name
+    Arguments:
+        json_backend(str):    JSON encoded backend
+        json_event(str):      JSON encoded event
+        backend_name(str):    backend name
     """
     event = json.loads(json_event)
     event_name = event.get('name')

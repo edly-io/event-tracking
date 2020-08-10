@@ -19,7 +19,11 @@ def validate_regex_list(value):
     Validate every regular expression in the value by trying to compile
     it.
 
-    Raise Validation error if any reg exp is failed to compile.
+    Arguments:
+        value (list) : list of regular exression strings
+
+    Raises:
+        ValidationError
     """
     _, invalid_expressions = _clean_expressions(value)
 
@@ -32,9 +36,17 @@ def validate_regex_list(value):
 
 def _clean_expressions(expressions_string):
     """
-    First clean the expressions list string by splitting using \n and then stripping
+    Return a tuple of compiled and invalid regular expressions.
+
+    First clean the expressions list string by splitting using `\n` and stripping
     the whitespace characters. Then return a tuple containing compiled and invalid
     expressions.
+
+    Arguments:
+        expressions_string (str) :      list of regular expressions seperated by newline.
+
+    Returns:
+        (list<compiled re>, list<str>) :   tuple containing compiled regular expressions and list of invalid re strings
     """
     expressions = expressions_string.split('\n')
     raw_expressions = [expression.strip() for expression in expressions]
@@ -45,6 +57,12 @@ def _compile_and_validate_expressions(expressions_list):
     """
     Compile and validate every reg ex in the list and return a tuple containing
     lists of compiled and invalid expressions.
+
+    Arguments:
+        expressions_list (list) :   list of regular expression strings
+
+    Returns:
+        (list<compiled re>, list<str>) :   tuple containing compiled regular expressions and list of invalid re strings
     """
     invalid_regex_expressions = []
     compiled_regex_expressions = []
@@ -121,6 +139,9 @@ class RegExFilter(TimeStampedModel):
     def compiled_expressions(self):
         """
         Return a list of compiled regular expressions
+
+        Returns:
+            list<compiled re>
         """
         key = get_cache_key(expressions=self.regular_expressions)
         cache_response = TieredCache.get_cached_response(key)
@@ -145,17 +166,16 @@ class RegExFilter(TimeStampedModel):
     @classmethod
     def get_latest_enabled_filter(cls, backend_name=None):
         """
-        Wrapper method for _get_latest_enabled_filter. First find the
-        required filter from the cache and return it if found. Otherwise
-        get the filter from DB and cache it.
-        """
-        return cls._get_cached_filter(backend_name=backend_name)
+        Get latest enabled filter for the backend with name `backend_name`.
 
-    @classmethod
-    def _get_cached_filter(cls, backend_name):
-        """
         Find and return filter for the provided backend name in the cache.
         If no filter is found in the cache, get one from DB and store it in the cache.
+
+        Arguments:
+            backend_name (str):     name of the backend
+
+        Returns:
+            RegExFilter object
         """
         filter_cache_key = get_cache_key(backend_name=backend_name)
         cache_response = TieredCache.get_cached_response(filter_cache_key)
@@ -181,6 +201,12 @@ class RegExFilter(TimeStampedModel):
         otherwise search among all available filters.
 
         Return None if there is no filter exists that matches the criteria.
+
+        Arguments:
+            backend_name (str):     name of the backend
+
+        Returns:
+            RegExFilter object
         """
         queryset = cls.objects.filter(is_enabled=True)
 
@@ -193,6 +219,12 @@ class RegExFilter(TimeStampedModel):
         """
         Return True if a string matches any expression of
         this filter, otherwise return False.
+
+        Arguments:
+            string(str) :   string to match with regular expressions
+
+        Returns:
+            Boolean
         """
         for expression in self.compiled_expressions:
             if expression.match(string):
@@ -209,6 +241,12 @@ class RegExFilter(TimeStampedModel):
               filter type is set to "allowlist"
             - string does not match any regular expression and
               the filter type is set to "blocklist"
+
+        Arguments:
+            string(str) :   string to match with regular expressions
+
+        Returns:
+            Boolean
         """
         is_a_match = self.is_string_a_match(string)
         if (

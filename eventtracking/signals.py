@@ -28,6 +28,9 @@ def invalidate_backend_filter_cache(instance, *args, **kwargs):   # pylint: disa
     """
     Delete filter's cache for a backend if a backend's filter is updated, deleted
     or a new one is created.
+
+    Arguments:
+        instance (RegExFilter)
     """
     logger.info('Filter for backend "%s" is updated. '
                 'Invalidating filter cache for this backend '
@@ -43,6 +46,9 @@ def invalidate_compiled_expressions_cache(instance, created, *args, **kwargs):  
     """
     If a filter is updated, remove the cached compiled expressions value matching
     the filter's regular expressions
+
+    Arguments:
+        instance (RegExFilter)
     """
     if not created:
         logger.info('Filter for backend "%s" is updated. '
